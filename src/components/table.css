@@ -61,32 +61,3 @@
 .styled-table td:nth-child(3) {
   width: 10%; /* Third column takes up 30% of the table width */
 }
-
-/* Button Styling */
-.styled-button {
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #009879;
-  border: none;
-  border-radius: 25px; /* Rounded corners for a game-like vibe */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
-}
-
-.styled-button:hover {
-  background-color: #007f65; /* Darken the button on hover */
-  transform: translateY(-2px); /* Slight lift on hover */
-}
-
-.styled-button:active {
-  background-color: #005f4a; /* Even darker on click */
-  transform: translateY(0); /* Reset the lift on click */
-}

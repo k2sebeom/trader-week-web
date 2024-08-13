@@ -5,14 +5,15 @@
   align-items: center;
 
   margin-top: 5rem;
+  margin-bottom: 10rem;
 
   padding: 1rem;
   box-sizing: border-box;
-  background-color: aqua;
 }
 
 .logo {
   width: 200px;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 400px) {
