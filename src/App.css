@@ -1,38 +1,86 @@
-.App {
-  text-align: center;
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-top: 5rem;
+    
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: aqua;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.logo {
+    width: 200px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@media screen and (max-width: 400px) {
+    .logo {
+        width: 50%;
+    }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.table-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 15px; /* Rounded corners for the table container */
+    overflow: hidden;
 }
 
-.App-link {
-  color: #61dafb;
+.styled-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+    border-radius: 15px 15px 0 0;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+    border-radius: 0 0 15px 15px;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+.styled-table th:nth-child(1),
+.styled-table td:nth-child(1) {
+    width: 60%; /* First column takes up 40% of the table width */
+}
+
+.styled-table th:nth-child(2),
+.styled-table td:nth-child(2) {
+    width: 30%; /* Second column takes up 30% of the table width */
+}
+
+.styled-table th:nth-child(3),
+.styled-table td:nth-child(3) {
+    width: 10%; /* Third column takes up 30% of the table width */
 }
