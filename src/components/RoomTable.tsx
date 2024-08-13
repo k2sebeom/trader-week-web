@@ -25,7 +25,7 @@ function RoomTable({ rooms }: RoomTableProps) {
               <td>{r.users.length}</td>
               <td>
                 <Link to={`/${r.id}`}>
-                  <button>Join</button>
+                  <button className="styled-button">Join</button>
                 </Link>
               </td>
             </tr>
