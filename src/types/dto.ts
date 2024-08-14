@@ -1,9 +1,3 @@
-interface UserDTO {
-  id: number;
-  gold: number;
-  nickname: string;
-}
-
 interface CompanyDTO {
   id: number;
   name: string;
@@ -12,7 +6,7 @@ interface CompanyDTO {
   thumbnail: string;
 }
 
-interface RoomDTO {
+interface GameDTO {
   id: number;
   started: boolean;
   theme: string;
@@ -20,4 +14,12 @@ interface RoomDTO {
   companies: CompanyDTO[];
 }
 
-export type { UserDTO, CompanyDTO, RoomDTO };
+interface UserDTO {
+  id: number;
+  gold: number;
+  nickname: string;
+
+  games: GameDTO[];
+}
+
+export type { UserDTO, CompanyDTO, GameDTO as RoomDTO };

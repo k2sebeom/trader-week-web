@@ -7,6 +7,7 @@ import { getAllRooms, getMe, signIn } from '../utils/api';
 import { RoomDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
+import ProfileCard from '../components/ProfileCard/ProfileCard';
 
 function Home() {
   const [rooms, setRooms] = useState<RoomDTO[]>([]);
@@ -27,6 +28,7 @@ function Home() {
       <div
         style={{
           marginBottom: 20,
+          width: '80%',
         }}
       >
         {me === null ? (
@@ -47,17 +49,19 @@ function Home() {
                   return [document.getElementById('nickname'), document.getElementById('password')];
                 },
               });
-              const [nickname, password] = result.value;
-              const user = await signIn(nickname.value, password.value);
-              if (user !== null) {
-                setMe(user);
+              if (result.value !== undefined) {
+                const [nickname, password] = result.value;
+                const user = await signIn(nickname.value, password.value);
+                if (user !== null) {
+                  setMe(user);
+                }
               }
             }}
           >
             Join the Market!
           </button>
         ) : (
-          <h1>{me.nickname}</h1>
+          <ProfileCard user={me} />
         )}
       </div>
 
