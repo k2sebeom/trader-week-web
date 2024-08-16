@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import '../App.css';
+import './home.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
