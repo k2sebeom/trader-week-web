@@ -55,3 +55,21 @@ export async function getGameInfo(id: number): Promise<GameDTO | null> {
     return null;
   }
 }
+
+export async function joinGame(id: number): Promise<GameDTO | null> {
+  try {
+    const resp = await instance.put(`/api/game/${id}/join`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function leaveGame(id: number): Promise<GameDTO | null> {
+  try {
+    const resp = await instance.delete(`/api/game/${id}/leave`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}

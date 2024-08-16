@@ -2,13 +2,17 @@ import React from 'react';
 import { GameDTO } from '../types/dto';
 import './table.css';
 import './button.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { joinGame } from '../utils/api';
+import Swal from 'sweetalert2';
 
 interface RoomTableProps {
   rooms: GameDTO[];
 }
 
 function RoomTable({ rooms }: RoomTableProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="table-container">
       <table className="styled-table">
@@ -25,9 +29,24 @@ function RoomTable({ rooms }: RoomTableProps) {
               <td>{r.theme}</td>
               <td>{r.users.length}</td>
               <td>
-                <Link to={`/${r.id}`}>
-                  <button className="styled-button">Join</button>
-                </Link>
+                <button
+                  onClick={async () => {
+                    const game = await joinGame(r.id);
+                    if (game !== null) {
+                      navigate(`/${r.id}`);
+                    } else {
+                      Swal.fire({
+                        title: 'OOPS',
+                        text: 'Failed to join the game!',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                      });
+                    }
+                  }}
+                  className="styled-button"
+                >
+                  Join
+                </button>
               </td>
             </tr>
           ))}

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GameDTO } from '../types/dto';
-import { getGameInfo } from '../utils/api';
+import { getGameInfo, leaveGame } from '../utils/api';
 
 import './game.css';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import CompanyCard from '../components/CompanyCard/CompanyCard';
 import useMe from '../hooks/useMe';
+import Swal from 'sweetalert2';
 
 function Game() {
   const { gameId } = useParams();
@@ -19,6 +20,8 @@ function Game() {
     users: [],
     companies: [],
   });
+
+  const navigate = useNavigate();
 
   const loadGame = useCallback(async () => {
     if (gameId !== undefined) {
@@ -49,16 +52,41 @@ function Game() {
       <div className="section">
         <div className="games">
           {game.companies.map((c) => (
-            <CompanyCard company={c} />
+            <CompanyCard key={`company-${c.id}`} company={c} />
           ))}
         </div>
 
         <div className="participants">
           <h2 className="title">Participants</h2>
           {game.users.map((u) => (
-            <div>
-              <ProfileCard user={u} key={`user-${u.id}`} />
-              {u.id === me?.id ? <button className="leave-button">Leave</button> : null}
+            <div key={`user-${u.id}`}>
+              <ProfileCard user={u} />
+              {u.id === me?.id ? (
+                <button
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Leave Game?',
+                      text: 'Do you really want to leave the game?',
+                      confirmButtonText: 'Yes',
+                      showCancelButton: true,
+                      cancelButtonText: 'Actually, no',
+                      icon: 'question',
+                      showLoaderOnConfirm: true,
+                      preConfirm: async () => {
+                        const result = await leaveGame(game.id);
+                        if (result === null) {
+                          Swal.showValidationMessage('Failed to leave the room..');
+                        } else {
+                          navigate('/');
+                        }
+                      },
+                    });
+                  }}
+                  className="leave-button"
+                >
+                  Leave
+                </button>
+              ) : null}
             </div>
           ))}
         </div>
