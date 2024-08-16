@@ -41,6 +41,18 @@ function Game() {
     loadGame();
   }, [loadGame]);
 
+  useEffect(() => {
+    function onUnload(e: BeforeUnloadEvent) {
+      e.preventDefault();
+      return '';
+    }
+    window.addEventListener('beforeunload', onUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', onUnload);
+    };
+  }, [window]);
+
   return (
     <div className="container">
       <div className="header-bar"></div>
