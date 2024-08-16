@@ -39,6 +39,10 @@ function Game() {
 
   useEffect(() => {
     loadGame();
+    let job = setInterval(loadGame, 3000);
+    return () => {
+      clearInterval(job);
+    };
   }, [loadGame]);
 
   useEffect(() => {
