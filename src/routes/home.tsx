@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import '../App.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
-import { getAllRooms, getMe, signIn } from '../utils/api';
-import { RoomDTO, UserDTO } from '../types/dto';
+import { createGame, getAllGames, getMe, signIn } from '../utils/api';
+import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 
 function Home() {
-  const [rooms, setRooms] = useState<RoomDTO[]>([]);
+  const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
 
+  const loadAllGames = useCallback(() => {
+    getAllGames().then((data) => setGames(data));
+  }, [setGames]);
+
   useEffect(() => {
-    getAllRooms().then((data) => setRooms(data));
-  }, []);
+    loadAllGames();
+  }, [loadAllGames]);
 
   useEffect(() => {
     getMe().then((data) => setMe(data));
@@ -29,6 +33,8 @@ function Home() {
         style={{
           marginBottom: 20,
           width: '80%',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         {me === null ? (
@@ -65,7 +71,38 @@ function Home() {
         )}
       </div>
 
-      <RoomTable rooms={rooms} />
+      <RoomTable rooms={games} />
+
+      <button
+        style={{
+          marginTop: 20,
+        }}
+        className="styled-button"
+        onClick={async () => {
+          const result = await Swal.fire({
+            title: 'Enter a theme for the game!',
+            input: 'text',
+            text: 'It may take upto 2 minutes to setup a new market',
+            confirmButtonText: 'Create a Game',
+            confirmButtonColor: '#007f65',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: !Swal.isLoading(),
+            preConfirm: async (theme: string) => {
+              const result = await createGame(theme);
+              if (result !== null) {
+                Swal.showValidationMessage('Game cannot be created now. Please try few minutes later.');
+              } else {
+                return result;
+              }
+            },
+          });
+          if (result.isConfirmed) {
+            loadAllGames();
+          }
+        }}
+      >
+        Create New Game
+      </button>
     </div>
   );
 }

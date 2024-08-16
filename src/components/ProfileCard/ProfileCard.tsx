@@ -19,11 +19,6 @@ function ProfileCard({ user }: ProfileCardProps) {
         <img className="coin" src={CoinImg} alt="coin" />
         <h2>{user.gold}</h2>
       </div>
-
-      <div className="profile-row">
-        <h2>Weeks Traded:</h2>
-        <h2 className="nickname">{user.games.length}</h2>
-      </div>
     </div>
   );
 }

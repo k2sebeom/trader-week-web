@@ -18,8 +18,6 @@ interface UserDTO {
   id: number;
   gold: number;
   nickname: string;
-
-  games: GameDTO[];
 }
 
-export type { UserDTO, CompanyDTO, GameDTO as RoomDTO };
+export type { UserDTO, CompanyDTO, GameDTO };

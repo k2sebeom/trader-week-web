@@ -1,11 +1,11 @@
 import React from 'react';
-import { RoomDTO } from '../types/dto';
+import { GameDTO } from '../types/dto';
 import './table.css';
 import './button.css';
 import { Link } from 'react-router-dom';
 
 interface RoomTableProps {
-  rooms: RoomDTO[];
+  rooms: GameDTO[];
 }
 
 function RoomTable({ rooms }: RoomTableProps) {
