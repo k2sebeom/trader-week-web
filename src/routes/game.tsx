@@ -5,11 +5,12 @@ import { getGameInfo } from '../utils/api';
 
 import './game.css';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
-import config from '../utils/configs';
 import CompanyCard from '../components/CompanyCard/CompanyCard';
+import useMe from '../hooks/useMe';
 
 function Game() {
   const { gameId } = useParams();
+  const me = useMe();
 
   const [game, setGame] = useState<GameDTO>({
     id: -1,
@@ -55,8 +56,38 @@ function Game() {
         <div className="participants">
           <h2 className="title">Participants</h2>
           {game.users.map((u) => (
-            <ProfileCard user={u} key={`user-${u.id}`} />
+            <div>
+              <ProfileCard user={u} key={`user-${u.id}`} />
+              {u.id === me?.id ? <button className="leave-button">Leave</button> : null}
+            </div>
           ))}
+        </div>
+        <div className="start-area">
+          {game.users.length > 0 && me?.id === game.users[0].id ? (
+            <button
+              style={{
+                width: 200,
+                height: 70,
+                fontSize: 24,
+              }}
+              className="styled-button"
+            >
+              Start!
+            </button>
+          ) : (
+            <button
+              style={{
+                width: 200,
+                height: 70,
+                fontSize: 24,
+                backgroundColor: '#666',
+              }}
+              className="styled-button"
+              disabled={true}
+            >
+              Wait...{' '}
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 .container {
   margin: 0;
   padding: 0;
+  margin-bottom: 50px;
 
   display: flex;
 
@@ -61,4 +62,42 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   box-sizing: border-box;
+}
+
+.leave-button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #c9581b;
+  border: none;
+  border-radius: 25px; /* Rounded corners for a game-like vibe */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+
+  margin-top: 10px;
+}
+
+.leave-button:hover {
+  background-color: #b64b11; /* Darken the button on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.leave-button:active {
+  background-color: #a84510; /* Even darker on click */
+  transform: translateY(0); /* Reset the lift on click */
+}
+
+.start-area {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 20px;
 }
