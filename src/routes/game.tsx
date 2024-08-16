@@ -71,7 +71,7 @@ function Game() {
         <div className="participants">
           <h2 className="title">Participants</h2>
           {game.users.map((u) => (
-            <div key={`user-${u.id}`}>
+            <div style={{ position: 'relative' }} key={`user-${u.id}`}>
               <ProfileCard user={u} />
               {u.id === me?.id ? (
                 <button
