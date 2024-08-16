@@ -46,3 +46,12 @@ export async function createGame(theme: string): Promise<GameDTO | null> {
     return null;
   }
 }
+
+export async function getGameInfo(id: number): Promise<GameDTO | null> {
+  try {
+    const resp = await instance.get(`/api/game/${id}`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}
