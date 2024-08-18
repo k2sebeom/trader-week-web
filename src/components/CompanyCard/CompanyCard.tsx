@@ -28,6 +28,18 @@ function CompanyCard({ company }: CompanyCardProps) {
           <img src={CoinImg} alt="gold" width={30} height={30} />
           <h3>{company.price}</h3>
         </div>
+        {company.events.length > 0 ? (
+          <div>
+            <p>{company.events[company.events.length - 1].description}</p>
+            <h3
+              style={{
+                color: company.events[company.events.length - 1].price > 0 ? 'red' : 'blue',
+              }}
+            >
+              {company.events[company.events.length - 1].price} %
+            </h3>
+          </div>
+        ) : null}
       </div>
     </div>
   );

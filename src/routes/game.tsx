@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { Line } from 'react-chartjs-2';
 import TradeButton from '../components/TradeButton/TradeButton';
 import CoinImg from '../assets/images/coin.png';
+import EventCover from '../components/EventCover/EventCover';
 
 function Game() {
   const { gameId } = useParams();
@@ -26,6 +27,10 @@ function Game() {
 
   const [deposit, setDeposit] = useState<number>(0);
   const [holdings, setHoldings] = useState<number[]>([0, 0, 0, 0, 0]);
+
+  const [currDay, setCurrDay] = useState<number>(0);
+
+  const [showCover, setShowCover] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -62,6 +67,15 @@ function Game() {
   }, [me, game, holdings]);
 
   useEffect(() => {
+    if (game.companies.length > 0) {
+      if (game.companies[0].events.length > currDay) {
+        setShowCover(true);
+        setCurrDay(game.companies[0].events.length);
+      }
+    }
+  }, [game, currDay]);
+
+  useEffect(() => {
     function onUnload(e: BeforeUnloadEvent) {
       e.preventDefault();
       return '';
@@ -75,6 +89,15 @@ function Game() {
 
   return (
     <div className="container">
+      {showCover ? (
+        <EventCover
+          day={currDay}
+          onEnd={() => {
+            setShowCover(false);
+          }}
+          companies={game.companies}
+        />
+      ) : null}
       <div className="header-bar"></div>
 
       <h1>
@@ -85,13 +108,14 @@ function Game() {
         <div className="games">
           {game.companies.map((c, i) => (
             <div
+              key={`company-${c.id}`}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
               }}
             >
-              <CompanyCard key={`company-${c.id}`} company={c} />
+              <CompanyCard company={c} />
               {game.started || true ? (
                 <TradeButton
                   enabled={deposit >= c.price}
@@ -163,21 +187,26 @@ function Game() {
           <div className="prices">
             <Line
               data={{
-                labels: [...Array(7)].map((_, i) => `Day ${i + 1}`),
+                labels: [...Array(8)].map((_, i) => `Day ${i}`),
                 datasets: game.companies.map((c) => ({
                   label: c.name,
                   data: c.history,
                 })),
-                //  [
-                //   {
-                //     label: '',
-
-                //     data: [1, 2, 3, 4, 5, 6],
-                //     borderColor: 'rgb(75, 192, 192)',
-                //     tension: 0.1,
-                //     fill: true,
-                //   },
-                // ],
+              }}
+              options={{
+                plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: (ctx) => {
+                        const comp = game.companies[ctx.datasetIndex];
+                        if (ctx.dataIndex === 0) {
+                          return `${comp.history[0]}`;
+                        }
+                        return comp.events[ctx.dataIndex - 1].description;
+                      },
+                    },
+                  },
+                },
               }}
             />
           </div>

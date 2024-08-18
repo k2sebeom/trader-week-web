@@ -1,0 +1,41 @@
+.cover {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000080;
+  z-index: 5;
+
+  left: 0;
+  top: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover h1 {
+  color: white;
+  opacity: 100;
+}
+
+.cover-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 200px;
+  transition: transform 0.3s ease;
+
+  display: flex;
+}
+
+.cover-card img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+}
+
+.cover-info {
+  width: 300px;
+  padding: 20px;
+}

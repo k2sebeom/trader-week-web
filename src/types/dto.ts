@@ -3,8 +3,14 @@ interface CompanyDTO {
   name: string;
   description: string;
   price: number;
+  events: EventDTO[];
   history: number[];
   thumbnail: string;
+}
+
+interface EventDTO {
+  description: string;
+  price: number;
 }
 
 interface GameDTO {
