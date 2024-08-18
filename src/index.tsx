@@ -5,6 +5,9 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Home from './routes/home';
 import Game from './routes/game';
+import { Chart as ChartJS, registerables, TimeScale } from 'chart.js';
+
+ChartJS.register(...registerables, TimeScale);
 
 const router = createBrowserRouter([
   {

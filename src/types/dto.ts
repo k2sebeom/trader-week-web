@@ -3,6 +3,7 @@ interface CompanyDTO {
   name: string;
   description: string;
   price: number;
+  history: number[];
   thumbnail: string;
 }
 
