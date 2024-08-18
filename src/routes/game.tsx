@@ -9,6 +9,8 @@ import CompanyCard from '../components/CompanyCard/CompanyCard';
 import useMe from '../hooks/useMe';
 import Swal from 'sweetalert2';
 import { Line } from 'react-chartjs-2';
+import TradeButton from '../components/TradeButton/TradeButton';
+import CoinImg from '../assets/images/coin.png';
 
 function Game() {
   const { gameId } = useParams();
@@ -21,6 +23,9 @@ function Game() {
     users: [],
     companies: [],
   });
+
+  const [deposit, setDeposit] = useState<number>(0);
+  const [holdings, setHoldings] = useState<number[]>([0, 0, 0, 0, 0]);
 
   const navigate = useNavigate();
 
@@ -47,6 +52,16 @@ function Game() {
   }, [loadGame]);
 
   useEffect(() => {
+    if (me !== null) {
+      let gold = me.gold;
+      game.companies.forEach((c, i) => {
+        gold -= holdings[i] * c.price;
+      });
+      setDeposit(gold);
+    }
+  }, [me, game, holdings]);
+
+  useEffect(() => {
     function onUnload(e: BeforeUnloadEvent) {
       e.preventDefault();
       return '';
@@ -68,10 +83,47 @@ function Game() {
 
       <div className="section">
         <div className="games">
-          {game.companies.map((c) => (
-            <CompanyCard key={`company-${c.id}`} company={c} />
+          {game.companies.map((c, i) => (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <CompanyCard key={`company-${c.id}`} company={c} />
+              {game.started || true ? (
+                <TradeButton
+                  enabled={deposit >= c.price}
+                  value={holdings[i]}
+                  onSell={() => {
+                    setHoldings((prev) => {
+                      const newHoldings = [...prev];
+                      newHoldings[i] -= 1;
+                      return newHoldings;
+                    });
+                  }}
+                  onBuy={() => {
+                    setHoldings((prev) => {
+                      const newHoldings = [...prev];
+                      newHoldings[i] += 1;
+                      return newHoldings;
+                    });
+                  }}
+                />
+              ) : null}
+            </div>
           ))}
         </div>
+
+        <div className="deposit">
+          <h2>Deposit: </h2>
+          <img src={CoinImg} alt="gold" width={30} height={30} />
+          <h2>{deposit}</h2>
+        </div>
+
+        <button className="styled-button">Trade</button>
+
         <div className="details">
           <div className="participants">
             <h2 className="title">Participants</h2>
