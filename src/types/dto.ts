@@ -3,28 +3,51 @@ interface CompanyDTO {
   name: string;
   description: string;
   price: number;
+  thumbnail: string;
   events: EventDTO[];
   history: number[];
-  thumbnail: string;
 }
 
 interface EventDTO {
+  id: number;
   description: string;
   price: number;
+  happen_at: string;
+}
+
+interface ParticipantDTO {
+  id: number;
+  nickname: string;
+  gold: number;
+  holdings: Record<number, number>;
+}
+
+interface TradeDTO {
+  company_id: number;
+  user_id: number;
+  amount: number;
+  day: number;
 }
 
 interface GameDTO {
   id: number;
-  started: boolean;
   theme: string;
-  users: UserDTO[];
   companies: CompanyDTO[];
+  participants: ParticipantDTO[];
+  trades: TradeDTO[];
+  started: boolean;
+  started_at?: string;
 }
 
 interface UserDTO {
   id: number;
-  gold: number;
   nickname: string;
+  gold: number;
 }
 
-export type { UserDTO, CompanyDTO, GameDTO };
+interface HoldingsDTO {
+  holdings: Record<number, number>;
+  gold: number;
+}
+
+export type { UserDTO, CompanyDTO, GameDTO, HoldingsDTO };

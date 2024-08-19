@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from './configs';
-import { GameDTO, UserDTO } from '../types/dto';
+import { GameDTO, HoldingsDTO, UserDTO } from '../types/dto';
 
 const instance = axios.create({
   baseURL: config.api_base,
@@ -68,6 +68,33 @@ export async function joinGame(id: number): Promise<GameDTO | null> {
 export async function leaveGame(id: number): Promise<GameDTO | null> {
   try {
     const resp = await instance.delete(`/api/game/${id}/leave`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function startGame(id: number): Promise<GameDTO | null> {
+  try {
+    const resp = await instance.put(`/api/game/${id}/start`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}
+
+interface TradeDetail {
+  company_id: number;
+  amount: number;
+}
+
+export type { TradeDetail };
+
+export async function makeTrade(id: number, trades: TradeDetail[]): Promise<HoldingsDTO | null> {
+  try {
+    const resp = await instance.post(`/api/game/${id}/trade`, {
+      trades,
+    });
     return resp.data;
   } catch {
     return null;

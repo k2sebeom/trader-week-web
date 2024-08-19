@@ -27,7 +27,7 @@ function RoomTable({ rooms }: RoomTableProps) {
           {rooms.map((r) => (
             <tr key={`room-${r.id}`}>
               <td>{r.theme}</td>
-              <td>{r.users.length}</td>
+              <td>{r.participants.length}</td>
               <td>
                 <button
                   onClick={async () => {

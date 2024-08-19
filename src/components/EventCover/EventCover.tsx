@@ -22,12 +22,14 @@ function EventCover({ day, onEnd, companies }: EventCoverProps) {
       await delay(2000);
       for (const c of companies) {
         setCompany(c);
-        setMode(1);
-        await delay(3000);
+        if (c.events.length > 0) {
+          setMode(1);
+          await delay(3000);
+        }
       }
       onEnd();
     }
-  }, [setMode, companies, animating]);
+  }, [setMode, companies, animating, onEnd]);
 
   useEffect(() => {
     animate();

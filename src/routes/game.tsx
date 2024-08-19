@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GameDTO } from '../types/dto';
-import { getGameInfo, leaveGame } from '../utils/api';
+import { getGameInfo, leaveGame, makeTrade, startGame, TradeDetail } from '../utils/api';
 
 import './game.css';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
@@ -21,16 +21,23 @@ function Game() {
     id: -1,
     started: false,
     theme: '',
-    users: [],
+    participants: [],
     companies: [],
+    started_at: Date(),
+    trades: [],
   });
 
+  // For local trades
   const [deposit, setDeposit] = useState<number>(0);
-  const [holdings, setHoldings] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [holdings, setHoldings] = useState<number[]>([0, 0, 0, 0, 0]); // True Value
+  const [newHoldings, setNewHoldings] = useState<number[]>([0, 0, 0, 0, 0]); // Local Value
 
-  const [currDay, setCurrDay] = useState<number>(0);
+  const [currDay, setCurrDay] = useState<number>(-1);
 
   const [showCover, setShowCover] = useState<boolean>(false);
+
+  const [deadline, setDeadline] = useState<number>(Date.now());
+  const [timeperc, setTimeperc] = useState<number>(0);
 
   const navigate = useNavigate();
 
@@ -48,6 +55,22 @@ function Game() {
     }
   }, [gameId]);
 
+  const performTrade = useCallback(
+    async (trades: TradeDetail[]) => {
+      const data = await makeTrade(game.id, trades);
+      if (data === null) {
+        Swal.showValidationMessage('Failed to make trade...');
+      } else {
+        const result = game.companies.map((c) => data.holdings[c.id]);
+        setHoldings(result);
+        setNewHoldings(result);
+        setDeposit(data.gold);
+      }
+    },
+    [game.companies, game.id],
+  );
+
+  // Refresh Game every 3 seconds
   useEffect(() => {
     loadGame();
     let job = setInterval(loadGame, 3000);
@@ -56,25 +79,47 @@ function Game() {
     };
   }, [loadGame]);
 
+  // Trade Status Changed
   useEffect(() => {
     if (me !== null) {
       let gold = me.gold;
       game.companies.forEach((c, i) => {
-        gold -= holdings[i] * c.price;
+        gold -= newHoldings[i] * c.price;
       });
       setDeposit(gold);
     }
-  }, [me, game, holdings]);
+  }, [me, game, newHoldings]);
 
+  // New Event Happened!
   useEffect(() => {
-    if (game.companies.length > 0) {
+    if (game.started && game.companies.length > 0) {
       if (game.companies[0].events.length > currDay) {
         setShowCover(true);
         setCurrDay(game.companies[0].events.length);
+
+        if (game.companies[0].events.length === 0 && game.started_at) {
+          setDeadline(Date.parse(game.started_at) + 115000);
+        } else {
+          const lastEvent = game.companies[0].events[game.companies[0].events.length - 1];
+          setDeadline(Date.parse(lastEvent.happen_at) + 115000);
+        }
       }
     }
   }, [game, currDay]);
 
+  // Timer Tick
+  useEffect(() => {
+    const job = setInterval(() => {
+      if (Date.now() < deadline) {
+        setTimeperc(100 - (deadline - Date.now()) / 1150);
+      }
+    }, 200);
+    return () => {
+      clearInterval(job);
+    };
+  }, [deadline]);
+
+  // Prevent Refresh
   useEffect(() => {
     function onUnload(e: BeforeUnloadEvent) {
       e.preventDefault();
@@ -116,22 +161,22 @@ function Game() {
               }}
             >
               <CompanyCard company={c} />
-              {game.started || true ? (
+              {game.started ? (
                 <TradeButton
                   enabled={deposit >= c.price}
-                  value={holdings[i]}
+                  value={newHoldings[i]}
                   onSell={() => {
-                    setHoldings((prev) => {
-                      const newHoldings = [...prev];
-                      newHoldings[i] -= 1;
-                      return newHoldings;
+                    setNewHoldings((prev) => {
+                      const newVal = [...prev];
+                      newVal[i] -= 1;
+                      return newVal;
                     });
                   }}
                   onBuy={() => {
-                    setHoldings((prev) => {
-                      const newHoldings = [...prev];
-                      newHoldings[i] += 1;
-                      return newHoldings;
+                    setNewHoldings((prev) => {
+                      const newVal = [...prev];
+                      newVal[i] += 1;
+                      return newVal;
                     });
                   }}
                 />
@@ -139,19 +184,45 @@ function Game() {
             </div>
           ))}
         </div>
+        {game.started ? (
+          <div className="deposit">
+            <h2>Deposit: </h2>
+            <img src={CoinImg} alt="gold" width={30} height={30} />
+            <h2>{deposit}</h2>
+          </div>
+        ) : null}
 
-        <div className="deposit">
-          <h2>Deposit: </h2>
-          <img src={CoinImg} alt="gold" width={30} height={30} />
-          <h2>{deposit}</h2>
-        </div>
-
-        <button className="styled-button">Trade</button>
+        {game.started ? (
+          <button
+            onClick={async () => {
+              const trades = holdings.map((h, i) => {
+                return {
+                  company_id: game.companies[i].id,
+                  amount: newHoldings[i] - h,
+                };
+              });
+              await Swal.fire({
+                title: 'Make trade?',
+                html: trades
+                  .map((_, i) => `<p>${game.companies[i].name}: ${holdings[i]} -> ${newHoldings[i]}</p>`)
+                  .join('\n'),
+                confirmButtonText: 'Good to go',
+                showCancelButton: true,
+                cancelButtonText: 'Wait...',
+                preConfirm: async () => await performTrade(trades),
+                showLoaderOnConfirm: true,
+              });
+            }}
+            className="styled-button"
+          >
+            Trade
+          </button>
+        ) : null}
 
         <div className="details">
           <div className="participants">
             <h2 className="title">Participants</h2>
-            {game.users.map((u) => (
+            {game.participants.map((u) => (
               <div style={{ position: 'relative' }} key={`user-${u.id}`}>
                 <ProfileCard user={u} />
                 {u.id === me?.id ? (
@@ -211,34 +282,66 @@ function Game() {
             />
           </div>
         </div>
-
-        <div className="start-area">
-          {game.users.length > 0 && me?.id === game.users[0].id ? (
-            <button
+        {game.started ? (
+          <div
+            style={{
+              width: '100%',
+              backgroundColor: '#f3f3f3',
+              borderRadius: 5,
+              overflow: 'hidden',
+              height: 30,
+            }}
+          >
+            <div
               style={{
-                width: 200,
-                height: 70,
-                fontSize: 24,
+                height: '100%',
+                width: `${timeperc}%`,
+                backgroundColor: '#e08f2c',
+                textAlign: 'center',
+                lineHeight: '30px',
+                color: 'white',
+                transition: 'width 0.25s',
               }}
-              className="styled-button"
-            >
-              Start!
-            </button>
-          ) : (
-            <button
-              style={{
-                width: 200,
-                height: 70,
-                fontSize: 24,
-                backgroundColor: '#666',
-              }}
-              className="styled-button"
-              disabled={true}
-            >
-              Wait...{' '}
-            </button>
-          )}
-        </div>
+            ></div>
+          </div>
+        ) : (
+          <div className="start-area">
+            {game.participants.length > 0 && me?.id === game.participants[0].id ? (
+              <button
+                style={{
+                  width: 200,
+                  height: 70,
+                  fontSize: 24,
+                }}
+                className="styled-button"
+                onClick={async () => {
+                  const result = await Swal.fire('Start Game?', 'This will immediately start the market', 'question');
+                  if (result.isConfirmed) {
+                    const resp = await startGame(game.id);
+                    if (resp === null) {
+                      Swal.fire('Failed to start the market', 'Try again later...', 'error');
+                    }
+                  }
+                }}
+              >
+                Start!
+              </button>
+            ) : (
+              <button
+                style={{
+                  width: 200,
+                  height: 70,
+                  fontSize: 24,
+                  backgroundColor: '#666',
+                }}
+                className="styled-button"
+                disabled={true}
+              >
+                Wait...{' '}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
