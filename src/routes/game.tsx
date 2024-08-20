@@ -80,6 +80,7 @@ function Game() {
   }, [loadGame]);
 
   // Trade Status Changed
+  // TODO: Deposit is wrong!
   useEffect(() => {
     if (me !== null) {
       let gold = me.gold;
@@ -290,6 +291,10 @@ function Game() {
               borderRadius: 5,
               overflow: 'hidden',
               height: 30,
+
+              marginTop: 20,
+              position: 'sticky',
+              bottom: 20,
             }}
           >
             <div
