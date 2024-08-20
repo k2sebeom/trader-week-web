@@ -30,7 +30,7 @@ function Game() {
   // For local trades
   const [deposit, setDeposit] = useState<number>(0);
   const [holdings, setHoldings] = useState<number[]>([0, 0, 0, 0, 0]); // True Value
-  const [newHoldings, setNewHoldings] = useState<number[]>([0, 0, 0, 0, 0]); // Local Value
+  const [delta, setDelta] = useState<number[]>([...holdings]);
 
   const [currDay, setCurrDay] = useState<number>(-1);
 
@@ -48,12 +48,41 @@ function Game() {
         const data = await getGameInfo(id);
         if (data !== null) {
           setGame(data);
+
+          if (me !== null) {
+            const p = data.participants.find((u) => u.id === me.id);
+            if (p !== undefined) {
+              setDeposit(p.gold);
+              setHoldings(data.companies.map((c) => p.holdings[c.id]));
+            }
+          }
         }
       } catch (err) {
         console.error(err);
       }
     }
-  }, [gameId]);
+  }, [gameId, me]);
+
+  const getCurrDeposit = useCallback((): number => {
+    let gold = deposit;
+    if (game.companies.length !== delta.length) {
+      return gold;
+    }
+    delta.forEach((d, i) => {
+      gold -= d * game.companies[i].price;
+    });
+    return gold;
+  }, [deposit, delta, game.companies]);
+
+  const getDeltaTrades = useCallback((): TradeDetail[] => {
+    const trades = delta.map((d, i) => {
+      return {
+        company_id: game.companies[i].id,
+        amount: d,
+      };
+    });
+    return trades;
+  }, [game.companies, delta]);
 
   const performTrade = useCallback(
     async (trades: TradeDetail[]) => {
@@ -63,8 +92,8 @@ function Game() {
       } else {
         const result = game.companies.map((c) => data.holdings[c.id]);
         setHoldings(result);
-        setNewHoldings(result);
         setDeposit(data.gold);
+        setDelta(game.companies.map(() => 0));
       }
     },
     [game.companies, game.id],
@@ -78,18 +107,6 @@ function Game() {
       clearInterval(job);
     };
   }, [loadGame]);
-
-  // Trade Status Changed
-  // TODO: Deposit is wrong!
-  useEffect(() => {
-    if (me !== null) {
-      let gold = me.gold;
-      game.companies.forEach((c, i) => {
-        gold -= newHoldings[i] * c.price;
-      });
-      setDeposit(gold);
-    }
-  }, [me, game, newHoldings]);
 
   // New Event Happened!
   useEffect(() => {
@@ -164,20 +181,20 @@ function Game() {
               <CompanyCard company={c} />
               {game.started ? (
                 <TradeButton
-                  enabled={deposit >= c.price}
-                  value={newHoldings[i]}
+                  enabled={getCurrDeposit() >= c.price}
+                  value={holdings[i] + delta[i]}
                   onSell={() => {
-                    setNewHoldings((prev) => {
-                      const newVal = [...prev];
-                      newVal[i] -= 1;
-                      return newVal;
+                    setDelta((prev) => {
+                      const newDelta = [...prev];
+                      newDelta[i] -= 1;
+                      return newDelta;
                     });
                   }}
                   onBuy={() => {
-                    setNewHoldings((prev) => {
-                      const newVal = [...prev];
-                      newVal[i] += 1;
-                      return newVal;
+                    setDelta((prev) => {
+                      const newDelta = [...prev];
+                      newDelta[i] += 1;
+                      return newDelta;
                     });
                   }}
                 />
@@ -189,23 +206,18 @@ function Game() {
           <div className="deposit">
             <h2>Deposit: </h2>
             <img src={CoinImg} alt="gold" width={30} height={30} />
-            <h2>{deposit}</h2>
+            <h2>{getCurrDeposit()}</h2>
           </div>
         ) : null}
 
         {game.started ? (
           <button
             onClick={async () => {
-              const trades = holdings.map((h, i) => {
-                return {
-                  company_id: game.companies[i].id,
-                  amount: newHoldings[i] - h,
-                };
-              });
+              const trades = getDeltaTrades();
               await Swal.fire({
                 title: 'Make trade?',
                 html: trades
-                  .map((_, i) => `<p>${game.companies[i].name}: ${holdings[i]} -> ${newHoldings[i]}</p>`)
+                  .map((_, i) => `<p>${game.companies[i].name}: ${holdings[i]} -> ${holdings[i] + delta[i]}</p>`)
                   .join('\n'),
                 confirmButtonText: 'Good to go',
                 showCancelButton: true,
