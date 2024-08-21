@@ -2,19 +2,49 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import './cover.css';
 import { delay } from '../../utils/time';
-import { CompanyDTO } from '../../types/dto';
+import { CompanyDTO, GameDTO } from '../../types/dto';
 import config from '../../utils/configs';
+import { getGameResult, throwAll } from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
 
 interface EventCoverProps {
   day: number;
   onEnd: () => void;
   companies: CompanyDTO[];
+  game: GameDTO;
 }
 
-function EventCover({ day, onEnd, companies }: EventCoverProps) {
+interface Rankings {
+  username: string;
+  profit: number;
+}
+
+function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
   const [animating, setAnimating] = useState<boolean>(false);
   const [mode, setMode] = useState<number>(0);
   const [company, setCompany] = useState<CompanyDTO>(companies[0]);
+
+  const [ranking, setRanking] = useState<Rankings[]>([]);
+
+  const navigate = useNavigate();
+
+  const finishGame = useCallback(async () => {
+    const resp = await getGameResult(game.id);
+    if (resp !== null) {
+      const data: Rankings[] = [];
+      for (const [uid, p] of Object.entries(resp.result)) {
+        data.push({
+          username: game.participants.find((v) => v.id === parseInt(uid))?.nickname ?? 'user',
+          profit: p,
+        });
+      }
+      data.sort((a, b) => {
+        return a.profit - b.profit;
+      });
+      setRanking(data);
+    }
+    await throwAll(game.id);
+  }, [game.id, game.participants]);
 
   const animate = useCallback(async () => {
     if (companies.length > 0 && !animating) {
@@ -24,12 +54,17 @@ function EventCover({ day, onEnd, companies }: EventCoverProps) {
         setCompany(c);
         if (c.events.length > 0) {
           setMode(1);
-          await delay(3000);
+          await delay(300);
         }
       }
-      onEnd();
+      if (game.closed) {
+        await finishGame();
+        setMode(2);
+      } else {
+        onEnd();
+      }
     }
-  }, [setMode, companies, animating, onEnd]);
+  }, [setMode, companies, animating, onEnd, game.closed, finishGame]);
 
   useEffect(() => {
     animate();
@@ -63,7 +98,38 @@ function EventCover({ day, onEnd, companies }: EventCoverProps) {
         </div>
       );
     default:
-      return null;
+      return (
+        <div className="cover">
+          <div className="cover-card">
+            <div className="cover-info">
+              <h2>Market is now Closed!</h2>
+              <div
+                style={{
+                  marginTop: 20,
+                  marginBottom: 30,
+                }}
+              >
+                {ranking.map((r, i) => (
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: 10,
+                    }}
+                    key={`rank-${i}`}
+                  >
+                    <h2>#{i + 1}</h2>
+                    <h2>{r.username}</h2>
+                    <h2>{r.profit}</h2>
+                  </div>
+                ))}
+              </div>
+              <button onClick={() => navigate('/')} className="styled-button">
+                Great!
+              </button>
+            </div>
+          </div>
+        </div>
+      );
   }
 }
 

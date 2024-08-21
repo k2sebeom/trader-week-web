@@ -24,6 +24,7 @@ function Game() {
     participants: [],
     companies: [],
     started_at: Date(),
+    closed: false,
     trades: [],
   });
 
@@ -116,10 +117,10 @@ function Game() {
         setCurrDay(game.companies[0].events.length);
 
         if (game.companies[0].events.length === 0 && game.started_at) {
-          setDeadline(Date.parse(game.started_at) + 115000);
+          setDeadline(Date.parse(game.started_at) + 55000);
         } else {
           const lastEvent = game.companies[0].events[game.companies[0].events.length - 1];
-          setDeadline(Date.parse(lastEvent.happen_at) + 115000);
+          setDeadline(Date.parse(lastEvent.happen_at) + 55000);
         }
       }
     }
@@ -129,7 +130,7 @@ function Game() {
   useEffect(() => {
     const job = setInterval(() => {
       if (Date.now() < deadline) {
-        setTimeperc(100 - (deadline - Date.now()) / 1150);
+        setTimeperc(100 - (deadline - Date.now()) / 550);
       }
     }, 200);
     return () => {
@@ -159,6 +160,7 @@ function Game() {
             setShowCover(false);
           }}
           companies={game.companies}
+          game={game}
         />
       ) : null}
       <div className="header-bar"></div>
@@ -307,6 +309,7 @@ function Game() {
               marginTop: 20,
               position: 'sticky',
               bottom: 20,
+              zIndex: 3,
             }}
           >
             <div

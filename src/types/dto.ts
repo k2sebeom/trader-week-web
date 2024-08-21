@@ -37,6 +37,7 @@ interface GameDTO {
   trades: TradeDTO[];
   started: boolean;
   started_at?: string;
+  closed: boolean;
 }
 
 interface UserDTO {
@@ -50,4 +51,8 @@ interface HoldingsDTO {
   gold: number;
 }
 
-export type { UserDTO, CompanyDTO, GameDTO, HoldingsDTO };
+interface ResultDTO {
+  result: Record<number, number>;
+}
+
+export type { UserDTO, CompanyDTO, GameDTO, HoldingsDTO, ResultDTO };
