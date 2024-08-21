@@ -47,6 +47,12 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
   }, [game.id, game.participants]);
 
   const animate = useCallback(async () => {
+    if (game.started_at !== undefined && Date.now() - Date.parse(game.started_at) > config.game.seconds_per_turn * 8) {
+      setMode(2);
+      await finishGame();
+      return;
+    }
+
     if (companies.length > 0 && !animating) {
       setAnimating(true);
       await delay(2000);

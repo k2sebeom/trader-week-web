@@ -12,6 +12,7 @@ import { Line } from 'react-chartjs-2';
 import TradeButton from '../components/TradeButton/TradeButton';
 import CoinImg from '../assets/images/coin.png';
 import EventCover from '../components/EventCover/EventCover';
+import config from '../utils/configs';
 
 function Game() {
   const { gameId } = useParams();
@@ -117,10 +118,10 @@ function Game() {
         setCurrDay(game.companies[0].events.length);
 
         if (game.companies[0].events.length === 0 && game.started_at) {
-          setDeadline(Date.parse(game.started_at) + 55000);
+          setDeadline(Date.parse(game.started_at) + (config.game.seconds_per_turn - 5) * 1000);
         } else {
           const lastEvent = game.companies[0].events[game.companies[0].events.length - 1];
-          setDeadline(Date.parse(lastEvent.happen_at) + 55000);
+          setDeadline(Date.parse(lastEvent.happen_at) + (config.game.seconds_per_turn - 5) * 1000);
         }
       }
     }
@@ -130,7 +131,7 @@ function Game() {
   useEffect(() => {
     const job = setInterval(() => {
       if (Date.now() < deadline) {
-        setTimeperc(100 - (deadline - Date.now()) / 550);
+        setTimeperc(100 - (deadline - Date.now()) / ((config.game.seconds_per_turn - 5) * 10));
       }
     }, 200);
     return () => {
