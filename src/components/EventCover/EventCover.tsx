@@ -54,7 +54,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
         setCompany(c);
         if (c.events.length > 0) {
           setMode(1);
-          await delay(300);
+          await delay(3000);
         }
       }
       if (game.closed) {
