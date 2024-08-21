@@ -38,9 +38,13 @@ export async function createGame(theme: string): Promise<GameDTO | null> {
     theme = 'Random Theme';
   }
   try {
-    const resp = await instance.post('/api/game/', {
-      theme,
-    });
+    const resp = await instance.post(
+      '/api/game/',
+      {
+        theme,
+      },
+      { timeout: 180000 },
+    );
     return resp.data;
   } catch {
     return null;
