@@ -8,10 +8,13 @@ import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
+
+  const navigate = useNavigate();
 
   const loadAllGames = useCallback(() => {
     getAllGames().then((data) => setGames(data));
@@ -96,8 +99,9 @@ function Home() {
               }
             },
           });
-          if (result.isConfirmed) {
-            loadAllGames();
+          if (result.isConfirmed && result.value !== undefined) {
+            const game: GameDTO = result.value;
+            navigate(`/${game.id}`);
           }
         }}
       >
