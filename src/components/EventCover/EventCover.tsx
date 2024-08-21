@@ -70,7 +70,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
         onEnd();
       }
     }
-  }, [setMode, companies, animating, onEnd, game.closed, finishGame]);
+  }, [setMode, companies, animating, onEnd, game.closed, finishGame, game.started_at]);
 
   useEffect(() => {
     animate();
