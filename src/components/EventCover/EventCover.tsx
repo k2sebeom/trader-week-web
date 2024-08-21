@@ -39,7 +39,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
         });
       }
       data.sort((a, b) => {
-        return a.profit - b.profit;
+        return b.profit - a.profit;
       });
       setRanking(data);
     }
