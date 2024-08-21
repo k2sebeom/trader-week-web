@@ -89,7 +89,7 @@ function Home() {
             allowOutsideClick: !Swal.isLoading(),
             preConfirm: async (theme: string) => {
               const result = await createGame(theme);
-              if (result !== null) {
+              if (result === null) {
                 Swal.showValidationMessage('Game cannot be created now. Please try few minutes later.');
               } else {
                 return result;
