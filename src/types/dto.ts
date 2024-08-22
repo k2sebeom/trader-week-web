@@ -38,6 +38,7 @@ interface GameDTO {
   started: boolean;
   started_at?: string;
   closed: boolean;
+  owner_id?: number;
 }
 
 interface UserDTO {

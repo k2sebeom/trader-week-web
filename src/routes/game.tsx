@@ -327,7 +327,7 @@ function Game() {
           </div>
         ) : (
           <div className="start-area">
-            {game.participants.length > 0 && me?.id === game.participants[0].id ? (
+            {me !== null && me.id === game.owner_id ? (
               <button
                 style={{
                   width: 200,
