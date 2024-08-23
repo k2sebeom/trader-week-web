@@ -7,6 +7,8 @@ import Home from './routes/home';
 import Game from './routes/game';
 import { Chart as ChartJS, registerables, TimeScale } from 'chart.js';
 
+import './locales/i18n';
+
 ChartJS.register(...registerables, TimeScale);
 
 const router = createBrowserRouter([
