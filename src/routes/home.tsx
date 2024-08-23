@@ -9,20 +9,27 @@ import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import { useNavigate } from 'react-router-dom';
+import HeaderBar from '../components/HeaderBar/HeaderBar';
+import { getLanguage, setLanguage, supportedLanguages } from '../locales/languages';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
 
+  const [lng, setLng] = useState<string>(getLanguage());
+
   const navigate = useNavigate();
 
-  const loadAllGames = useCallback(() => {
-    getAllGames().then((data) => setGames(data));
-  }, [setGames]);
+  const loadAllGames = useCallback(
+    (language: string) => {
+      getAllGames(language).then((data) => setGames(data));
+    },
+    [setGames],
+  );
 
   useEffect(() => {
-    loadAllGames();
-  }, [loadAllGames]);
+    loadAllGames(lng);
+  }, [loadAllGames, lng]);
 
   useEffect(() => {
     getMe().then((data) => setMe(data));
@@ -30,6 +37,31 @@ function Home() {
 
   return (
     <div className="container">
+      <HeaderBar>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <select
+            value={lng}
+            onChange={(e) => {
+              setLng(e.target.value);
+              setLanguage(e.target.value);
+            }}
+            id="lng-select"
+          >
+            {supportedLanguages.map((l) => (
+              <option key={l.value} value={l.value}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </HeaderBar>
       <img alt="logo" src={LogoImg} className="logo" />
       <h1>Traders Week</h1>
 
@@ -92,7 +124,7 @@ function Home() {
             showLoaderOnConfirm: true,
             allowOutsideClick: !Swal.isLoading(),
             preConfirm: async (theme: string) => {
-              const result = await createGame(theme);
+              const result = await createGame(theme, lng);
               if (result === null) {
                 Swal.showValidationMessage('Game cannot be created now. Please try few minutes later.');
               } else {

@@ -13,6 +13,7 @@ import TradeButton from '../components/TradeButton/TradeButton';
 import CoinImg from '../assets/images/coin.png';
 import EventCover from '../components/EventCover/EventCover';
 import config from '../utils/configs';
+import HeaderBar from '../components/HeaderBar/HeaderBar';
 
 function Game() {
   const { gameId } = useParams();
@@ -164,7 +165,7 @@ function Game() {
           game={game}
         />
       ) : null}
-      <div className="header-bar"></div>
+      <HeaderBar />
 
       <h1>
         <q>{game.theme}</q>

@@ -7,8 +7,12 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export async function getAllGames() {
-  const resp = await instance.get('/api/game/');
+export async function getAllGames(language: string) {
+  const resp = await instance.get('/api/game/', {
+    params: {
+      language,
+    },
+  });
   return resp.data;
 }
 
@@ -33,7 +37,7 @@ export async function signIn(nickname: string, password: string): Promise<UserDT
   }
 }
 
-export async function createGame(theme: string): Promise<GameDTO | null> {
+export async function createGame(theme: string, language: string): Promise<GameDTO | null> {
   if (theme.trim().length === 0) {
     theme = 'Random Theme';
   }
@@ -42,6 +46,7 @@ export async function createGame(theme: string): Promise<GameDTO | null> {
       '/api/game/',
       {
         theme,
+        language,
       },
       { timeout: 180000 },
     );
