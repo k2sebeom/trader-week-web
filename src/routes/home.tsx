@@ -9,14 +9,12 @@ import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
 import ProfileCard from '../components/ProfileCard/ProfileCard';
 import { useNavigate } from 'react-router-dom';
-import { Trans, useTranslation } from 'react-i18next';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
 
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const loadAllGames = useCallback(() => {
     getAllGames().then((data) => setGames(data));
@@ -33,7 +31,7 @@ function Home() {
   return (
     <div className="container">
       <img alt="logo" src={LogoImg} className="logo" />
-      <h1>Traders Week {t('hello')}</h1>
+      <h1>Traders Week</h1>
 
       <div
         style={{

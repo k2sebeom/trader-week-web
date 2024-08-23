@@ -104,7 +104,7 @@ function Game() {
   // Refresh Game every 3 seconds
   useEffect(() => {
     loadGame();
-    let job = setInterval(loadGame, 3000);
+    const job = setInterval(loadGame, 3000);
     return () => {
       clearInterval(job);
     };
