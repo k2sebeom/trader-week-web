@@ -6,6 +6,7 @@ import { CompanyDTO, GameDTO } from '../../types/dto';
 import config from '../../utils/configs';
 import { getGameResult, throwAll } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface EventCoverProps {
   day: number;
@@ -27,6 +28,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
   const [ranking, setRanking] = useState<Rankings[]>([]);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const finishGame = useCallback(async () => {
     const resp = await getGameResult(game.id);
@@ -111,7 +113,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
         <div className="cover">
           <div className="cover-card">
             <div className="cover-info">
-              <h2>Market is now Closed!</h2>
+              <h2>{t('game.eventCover.title')}</h2>
               <div
                 style={{
                   marginTop: 20,
@@ -133,7 +135,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
                 ))}
               </div>
               <button onClick={() => navigate('/')} className="styled-button">
-                Great!
+                {t('game.eventCover.message')}
               </button>
             </div>
           </div>

@@ -1,9 +1,54 @@
 import i18n, { Resource, ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import ko from './ko';
+import en from './en';
 
 interface CustomTranslation {
-  hello: string;
+  join: string;
+  create: string;
+  gameTable: {
+    theme: string;
+    users: string;
+    join: string;
+  };
+  createModal: {
+    title: string;
+    message: string;
+    confirm: string;
+    error: string;
+  };
+
+  game: {
+    participants: string;
+    leave: string;
+    start: string;
+    wait: string;
+    deposit: string;
+    trade: string;
+    leaveModal: {
+      title: string;
+      message: string;
+      cancel: string;
+      confirm: string;
+      error: string;
+    };
+    startModal: {
+      title: string;
+      message: string;
+      errorTitle: string;
+      errorMessage: string;
+    };
+    tradeModal: {
+      title: string;
+      confirm: string;
+      cancel: string;
+      error: string;
+    };
+    eventCover: {
+      title: string;
+      message: string;
+    };
+  };
 }
 
 interface CustomResource extends ResourceLanguage {
@@ -12,6 +57,7 @@ interface CustomResource extends ResourceLanguage {
 
 const resources: Resource = {
   ko,
+  en,
 };
 
 i18n.use(initReactI18next).init({

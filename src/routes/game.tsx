@@ -14,6 +14,7 @@ import CoinImg from '../assets/images/coin.png';
 import EventCover from '../components/EventCover/EventCover';
 import config from '../utils/configs';
 import HeaderBar from '../components/HeaderBar/HeaderBar';
+import { useTranslation } from 'react-i18next';
 
 function Game() {
   const { gameId } = useParams();
@@ -43,6 +44,7 @@ function Game() {
   const [timeperc, setTimeperc] = useState<number>(0);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const loadGame = useCallback(async () => {
     if (gameId !== undefined) {
@@ -91,7 +93,7 @@ function Game() {
     async (trades: TradeDetail[]) => {
       const data = await makeTrade(game.id, trades);
       if (data === null) {
-        Swal.showValidationMessage('Failed to make trade...');
+        Swal.showValidationMessage(t('game.tradeModal.error'));
       } else {
         const result = game.companies.map((c) => data.holdings[c.id]);
         setHoldings(result);
@@ -208,7 +210,7 @@ function Game() {
         </div>
         {game.started ? (
           <div className="deposit">
-            <h2>Deposit: </h2>
+            <h2>{t('game.deposit')}: </h2>
             <img src={CoinImg} alt="gold" width={30} height={30} />
             <h2>{getCurrDeposit()}</h2>
           </div>
@@ -219,26 +221,26 @@ function Game() {
             onClick={async () => {
               const trades = getDeltaTrades();
               await Swal.fire({
-                title: 'Make trade?',
+                title: t('game.tradeModal.title'),
                 html: trades
                   .map((_, i) => `<p>${game.companies[i].name}: ${holdings[i]} -> ${holdings[i] + delta[i]}</p>`)
                   .join('\n'),
-                confirmButtonText: 'Good to go',
+                confirmButtonText: t('game.tradeModal.confirm'),
                 showCancelButton: true,
-                cancelButtonText: 'Wait...',
+                cancelButtonText: t('game.tradeModal.cancel'),
                 preConfirm: async () => await performTrade(trades),
                 showLoaderOnConfirm: true,
               });
             }}
             className="styled-button"
           >
-            Trade
+            {t('game.trade')}
           </button>
         ) : null}
 
         <div className="details">
           <div className="participants">
-            <h2 className="title">Participants</h2>
+            <h2 className="title">{t('game.participants')}</h2>
             {game.participants.map((u) => (
               <div style={{ position: 'relative' }} key={`user-${u.id}`}>
                 <ProfileCard user={u} />
@@ -246,17 +248,17 @@ function Game() {
                   <button
                     onClick={() => {
                       Swal.fire({
-                        title: 'Leave Game?',
-                        text: 'Do you really want to leave the game?',
-                        confirmButtonText: 'Yes',
+                        title: t('game.leaveModal.title'),
+                        text: t('game.leaveModal.message'),
+                        confirmButtonText: t('game.leaveModal.confirm'),
                         showCancelButton: true,
-                        cancelButtonText: 'Actually, no',
+                        cancelButtonText: t('game.leaveModal.cancel'),
                         icon: 'question',
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                           const result = await leaveGame(game.id);
                           if (result === null) {
-                            Swal.showValidationMessage('Failed to leave the room..');
+                            Swal.showValidationMessage(t('game.leaveModal.error'));
                           } else {
                             navigate('/');
                           }
@@ -265,7 +267,7 @@ function Game() {
                     }}
                     className="leave-button"
                   >
-                    Leave
+                    {t('game.leave')}
                   </button>
                 ) : null}
               </div>
@@ -337,16 +339,16 @@ function Game() {
                 }}
                 className="styled-button"
                 onClick={async () => {
-                  const result = await Swal.fire('Start Game?', 'This will immediately start the market', 'question');
+                  const result = await Swal.fire(t('game.startModal.title'), t('game.startModal.message'), 'question');
                   if (result.isConfirmed) {
                     const resp = await startGame(game.id);
                     if (resp === null) {
-                      Swal.fire('Failed to start the market', 'Try again later...', 'error');
+                      Swal.fire(t('game.startModal.errorTitle'), t('game.startModal.message'), 'error');
                     }
                   }
                 }}
               >
-                Start!
+                {t('game.start')}
               </button>
             ) : (
               <button
@@ -359,7 +361,7 @@ function Game() {
                 className="styled-button"
                 disabled={true}
               >
-                Wait...{' '}
+                {t('game.wait')}
               </button>
             )}
           </div>

@@ -5,6 +5,7 @@ import './button.css';
 import { useNavigate } from 'react-router-dom';
 import { joinGame } from '../utils/api';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 interface RoomTableProps {
   rooms: GameDTO[];
@@ -12,14 +13,15 @@ interface RoomTableProps {
 
 function RoomTable({ rooms }: RoomTableProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="table-container">
       <table className="styled-table">
         <thead>
           <tr>
-            <th>Theme</th>
-            <th>Users</th>
+            <th>{t('gameTable.theme')}</th>
+            <th>{t('gameTable.users')}</th>
             <th></th>
           </tr>
         </thead>
@@ -45,7 +47,7 @@ function RoomTable({ rooms }: RoomTableProps) {
                   }}
                   className="styled-button"
                 >
-                  Join
+                  {t('gameTable.join')}
                 </button>
               </td>
             </tr>

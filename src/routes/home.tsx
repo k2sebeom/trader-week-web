@@ -11,6 +11,7 @@ import ProfileCard from '../components/ProfileCard/ProfileCard';
 import { useNavigate } from 'react-router-dom';
 import HeaderBar from '../components/HeaderBar/HeaderBar';
 import { getLanguage, setLanguage, supportedLanguages } from '../locales/languages';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
@@ -19,6 +20,7 @@ function Home() {
   const [lng, setLng] = useState<string>(getLanguage());
 
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   const loadAllGames = useCallback(
     (language: string) => {
@@ -49,6 +51,7 @@ function Home() {
           <select
             value={lng}
             onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
               setLng(e.target.value);
               setLanguage(e.target.value);
             }}
@@ -100,7 +103,7 @@ function Home() {
               }
             }}
           >
-            Join the Market!
+            {t('join')}
           </button>
         ) : (
           <ProfileCard user={me} />
@@ -116,17 +119,17 @@ function Home() {
         className="styled-button"
         onClick={async () => {
           const result = await Swal.fire({
-            title: 'Enter a theme for the game!',
+            title: t('createModal.title'),
             input: 'text',
-            text: 'It may take upto 2 minutes to setup a new market',
-            confirmButtonText: 'Create a Game',
+            text: t('createModal.message'),
+            confirmButtonText: t('createModal.confirm'),
             confirmButtonColor: '#007f65',
             showLoaderOnConfirm: true,
             allowOutsideClick: !Swal.isLoading(),
             preConfirm: async (theme: string) => {
               const result = await createGame(theme, lng);
               if (result === null) {
-                Swal.showValidationMessage('Game cannot be created now. Please try few minutes later.');
+                Swal.showValidationMessage(t('createModal.error'));
               } else {
                 return result;
               }
@@ -138,7 +141,7 @@ function Home() {
           }
         }}
       >
-        Create New Game
+        {t('create')}
       </button>
     </div>
   );
