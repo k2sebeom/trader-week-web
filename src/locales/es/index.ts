@@ -4,6 +4,10 @@ const es: CustomResource = {
   translation: {
     join: '¡Únete al Mercado!',
     create: 'Crear Nuevo Juego',
+    warnings: {
+      generic: 'Se ha producido un error.',
+      unauthorized: 'Primero inicie sesión',
+    },
     signinModal: {
       title: '¡Inicia sesión / regístrate como trader!',
       nickname: 'apodo', // placeholder para el campo de apodo

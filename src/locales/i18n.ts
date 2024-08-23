@@ -9,6 +9,12 @@ import es from './es';
 interface CustomTranslation {
   join: string;
   create: string;
+
+  warnings: {
+    generic: string;
+    unauthorized: string;
+  };
+
   signinModal: {
     title: string;
     nickname: string;

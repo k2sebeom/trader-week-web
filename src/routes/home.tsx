@@ -121,6 +121,10 @@ function Home() {
         }}
         className="styled-button"
         onClick={async () => {
+          if (me === null) {
+            Swal.fire(t('warnings.unauthorized'), '', 'warning');
+            return;
+          }
           const result = await Swal.fire({
             title: t('createModal.title'),
             input: 'text',

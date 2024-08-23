@@ -4,6 +4,10 @@ const ar: CustomResource = {
   translation: {
     join: 'انضم إلى السوق!',
     create: 'أنشئ لعبة جديدة',
+    warnings: {
+      generic: 'حدث خطأ',
+      unauthorized: 'الرجاء تسجيل الدخول أولاً',
+    },
     signinModal: {
       title: 'سجل دخولك / اشتراكك كتاجر!',
       nickname: 'الاسم المستعار', // placeholder for nickname field

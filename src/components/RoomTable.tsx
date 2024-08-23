@@ -38,10 +38,8 @@ function RoomTable({ rooms }: RoomTableProps) {
                       navigate(`/${r.id}`);
                     } else {
                       Swal.fire({
-                        title: 'OOPS',
-                        text: 'Failed to join the game!',
+                        title: t('warnings.generic'),
                         icon: 'error',
-                        confirmButtonText: 'OK',
                       });
                     }
                   }}

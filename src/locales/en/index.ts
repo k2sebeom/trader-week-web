@@ -4,6 +4,10 @@ const en: CustomResource = {
   translation: {
     join: 'Join the Market!',
     create: 'Create New Game',
+    warnings: {
+      generic: 'An error has occurred.',
+      unauthorized: 'You should sign in first',
+    },
     signinModal: {
       title: 'Sign in / up as a trader!',
       nickname: 'nickname',

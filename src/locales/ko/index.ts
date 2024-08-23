@@ -4,6 +4,10 @@ const ko: CustomResource = {
   translation: {
     join: '시장에 참여하세요!',
     create: '새 게임 만들기',
+    warnings: {
+      generic: '오류가 발생했습니다.',
+      unauthorized: '로그인을 먼저 하세요.',
+    },
     signinModal: {
       title: '투자자로 로그인 / 회원가입 하세요!',
       nickname: '닉네임',
