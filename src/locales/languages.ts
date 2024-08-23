@@ -20,10 +20,6 @@ export const supportedLanguages: LanguageSelectParam[] = [
     label: 'español',
   },
   {
-    value: 'id',
-    label: 'Indonesia',
-  },
-  {
     value: 'ja',
     label: '日本語',
   },

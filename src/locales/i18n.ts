@@ -2,10 +2,19 @@ import i18n, { Resource, ResourceLanguage } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import ko from './ko';
 import en from './en';
+import ar from './ar';
+import ja from './ja';
+import es from './es';
 
 interface CustomTranslation {
   join: string;
   create: string;
+  signinModal: {
+    title: string;
+    nickname: string;
+    password: string;
+    confirm: string;
+  };
   gameTable: {
     theme: string;
     users: string;
@@ -58,6 +67,9 @@ interface CustomResource extends ResourceLanguage {
 const resources: Resource = {
   ko,
   en,
+  ar,
+  ja,
+  es,
 };
 
 i18n.use(initReactI18next).init({

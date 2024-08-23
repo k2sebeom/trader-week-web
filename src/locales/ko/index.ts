@@ -4,6 +4,12 @@ const ko: CustomResource = {
   translation: {
     join: '시장에 참여하세요!',
     create: '새 게임 만들기',
+    signinModal: {
+      title: '투자자로 로그인 / 회원가입 하세요!',
+      nickname: '닉네임',
+      password: '비밀번호',
+      confirm: '시장에 뛰어들기',
+    },
 
     gameTable: {
       theme: '테마',

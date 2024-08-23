@@ -34,6 +34,10 @@ function Home() {
   }, [loadAllGames, lng]);
 
   useEffect(() => {
+    i18n.changeLanguage(lng);
+  }, [lng]);
+
+  useEffect(() => {
     getMe().then((data) => setMe(data));
   }, []);
 
@@ -51,7 +55,6 @@ function Home() {
           <select
             value={lng}
             onChange={(e) => {
-              i18n.changeLanguage(e.target.value);
               setLng(e.target.value);
               setLanguage(e.target.value);
             }}
@@ -81,14 +84,14 @@ function Home() {
             className="styled-button"
             onClick={async () => {
               const result = await Swal.fire({
-                title: 'Sign in / up as a trader!',
+                title: t('signinModal.title'),
                 html: `
                 <form>
-              <input id="nickname" placeholder="nickname" class="swal2-input" />
-              <input id="password" autocomplete placeholder="password" type="password" class="swal2-input" />
+              <input id="nickname" placeholder="${t('signinModal.nickname')}" class="swal2-input" />
+              <input id="password" autocomplete placeholder="${t('signinModal.password')}" type="password" class="swal2-input" />
               </form>
             `,
-                confirmButtonText: 'Start Trading!',
+                confirmButtonText: t('signinModal.confirm'),
                 confirmButtonColor: '#007f65',
                 preConfirm: () => {
                   return [document.getElementById('nickname'), document.getElementById('password')];

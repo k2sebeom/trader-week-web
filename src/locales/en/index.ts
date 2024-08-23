@@ -4,6 +4,12 @@ const en: CustomResource = {
   translation: {
     join: 'Join the Market!',
     create: 'Create New Game',
+    signinModal: {
+      title: 'Sign in / up as a trader!',
+      nickname: 'nickname',
+      password: 'password',
+      confirm: 'Start Trading!',
+    },
 
     gameTable: {
       theme: 'Theme',
