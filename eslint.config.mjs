@@ -17,7 +17,7 @@ export default [
     settings: {
       react: {
         version: 'detect',
-      }
+      },
     },
     rules: {
       'no-unused-vars': 'warn',

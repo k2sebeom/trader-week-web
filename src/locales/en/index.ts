@@ -8,6 +8,11 @@ const en: CustomResource = {
       generic: 'An error has occurred.',
       unauthorized: 'You should sign in first',
     },
+    supportModal: {
+      title: 'Support the market',
+      message: 'This game is supported by a community ❤️',
+      cancel: 'Just take me to the game',
+    },
     signinModal: {
       title: 'Sign in / up as a trader!',
       nickname: 'nickname',

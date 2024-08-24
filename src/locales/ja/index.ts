@@ -8,6 +8,11 @@ const ja: CustomResource = {
       generic: 'エラーが発生しました',
       unauthorized: 'まずログインしてください',
     },
+    supportModal: {
+      title: 'マーケットをサポートする',
+      message: 'このゲームはコミュニティによってサポートされています ❤️',
+      cancel: 'ゲームに移動するだけ',
+    },
     signinModal: {
       title: 'トレーダーとしてサインイン / サインアップ！',
       nickname: 'ニックネーム', // ニックネーム入力欄のプレースホルダー

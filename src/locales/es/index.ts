@@ -8,6 +8,11 @@ const es: CustomResource = {
       generic: 'Se ha producido un error.',
       unauthorized: 'Primero inicie sesión',
     },
+    supportModal: {
+      title: 'Apoya el mercado',
+      message: 'Este juego está respaldado por la comunidad ❤️',
+      cancel: 'Solo llévame al juego',
+    },
     signinModal: {
       title: '¡Inicia sesión / regístrate como trader!',
       nickname: 'apodo', // placeholder para el campo de apodo

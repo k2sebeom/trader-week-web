@@ -8,6 +8,11 @@ const ar: CustomResource = {
       generic: 'حدث خطأ',
       unauthorized: 'الرجاء تسجيل الدخول أولاً',
     },
+    supportModal: {
+      title: 'ادعم السوق',
+      message: 'هذا اللعبة مدعومة من المجتمع ❤️',
+      cancel: 'خذني إلى اللعبة فقط',
+    },
     signinModal: {
       title: 'سجل دخولك / اشتراكك كتاجر!',
       nickname: 'الاسم المستعار', // placeholder for nickname field

@@ -125,6 +125,16 @@ function Home() {
             Swal.fire(t('warnings.unauthorized'), '', 'warning');
             return;
           }
+          await Swal.fire({
+            title: t('supportModal.title'),
+            html: `
+            <p>${t('supportModal.message')}</p>
+              <a id='coffee' href="https://www.buymeacoffee.com/k2sebeom" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+            `,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonText: t('supportModal.cancel'),
+          });
           const result = await Swal.fire({
             title: t('createModal.title'),
             input: 'text',

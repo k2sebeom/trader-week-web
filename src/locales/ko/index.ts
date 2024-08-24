@@ -8,6 +8,11 @@ const ko: CustomResource = {
       generic: '오류가 발생했습니다.',
       unauthorized: '로그인을 먼저 하세요.',
     },
+    supportModal: {
+      title: '마켓을 지원해주세요',
+      message: '이 게임은 커뮤니티의 지원으로 운영됩니다 ❤️',
+      cancel: '그냥 게임으로 이동할게요',
+    },
     signinModal: {
       title: '투자자로 로그인 / 회원가입 하세요!',
       nickname: '닉네임',

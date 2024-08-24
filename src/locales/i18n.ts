@@ -15,6 +15,12 @@ interface CustomTranslation {
     unauthorized: string;
   };
 
+  supportModal: {
+    title: string;
+    message: string;
+    cancel: string;
+  };
+
   signinModal: {
     title: string;
     nickname: string;
