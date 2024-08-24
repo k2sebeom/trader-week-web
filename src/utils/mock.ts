@@ -13,17 +13,8 @@ export const mockRanking: UserDTO[] = [
   { id: 10, nickname: 'pixelquest', gold: 12000 },
 ];
 
-export function getMockGolds(low: number, high: number, count = 10) {
-  const randomNumbers = [];
+export function sortRanking(ranking: UserDTO[]) {
+  ranking.sort((r1, r2) => r2.gold - r1.gold);
 
-  for (let i = 0; i < count; i++) {
-    // Generate random number between a and b
-    const randomNumber = Math.floor(Math.random() * (high - low + 1)) + low;
-    randomNumbers.push(randomNumber);
-  }
-
-  // Sort the numbers in ascending order
-  randomNumbers.sort((num1, num2) => num2 - num1);
-
-  return randomNumbers;
+  return ranking.slice(0, 10);
 }

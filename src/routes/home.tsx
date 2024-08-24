@@ -14,7 +14,7 @@ import { getLanguage, setLanguage, supportedLanguages } from '../locales/languag
 import { useTranslation } from 'react-i18next';
 import TutorialCover from '../components/EventCover/TutorialCover';
 import RankingTable from '../components/RankingTable/RankingTable';
-import { getMockGolds, mockRanking } from '../utils/mock';
+import { sortRanking, mockRanking } from '../utils/mock';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
@@ -49,22 +49,7 @@ function Home() {
     getMe().then((data) => setMe(data));
     getRankings().then((data) => {
       if (data !== null) {
-        setRanking((prev) => {
-          const newRanking = [...prev];
-          data.forEach((u, i) => {
-            newRanking[i] = u;
-          });
-          if (data.length > 0) {
-            const high = data[data.length - 1].gold;
-            const newGolds = getMockGolds(high * 0.9, high);
-            newGolds.forEach((g, i) => {
-              if (i + data.length < newRanking.length) {
-                newRanking[i + data.length].gold = g;
-              }
-            });
-          }
-          return newRanking;
-        });
+        setRanking(sortRanking([...mockRanking, ...data]));
       }
     });
   }, []);
