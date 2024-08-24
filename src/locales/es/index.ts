@@ -8,6 +8,11 @@ const es: CustomResource = {
       generic: 'Se ha producido un error.',
       unauthorized: 'Primero inicie sesión',
     },
+    howto: {
+      buttonName: 'Cómo Jugar',
+      tutorial: `"Trader Week" es un juego donde debes interpretar los cambios en el mercado de acciones durante 7 turnos y desarrollar una estrategia para obtener el máximo beneficio. Crea una cuenta usando un apodo y una contraseña aleatorios, comenzando con un capital de 10,000. Únete a un juego ya existente o crea un nuevo mercado con un tema interesante. Después de unirte, espera a que el anfitrión inicie el juego. Los precios de las acciones de 5 empresas fluctuarán durante 7 turnos. ¡No olvides presionar el botón "Proceder con la Operación" para completar tus transacciones! Si estás listo para dominar el mercado, ¡empieza el juego ahora!`,
+      close: 'Cerrar',
+    },
     supportModal: {
       title: 'Apoya el mercado',
       message: 'Este juego está respaldado por la comunidad ❤️',

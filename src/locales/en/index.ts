@@ -4,6 +4,11 @@ const en: CustomResource = {
   translation: {
     join: 'Join the Market!',
     create: 'Create New Game',
+    howto: {
+      buttonName: 'How to Play',
+      tutorial: `"Trader Week" is a game where you read the changing stock market over 7 turns and devise a strategy to earn the maximum profit. Create an account with a random nickname and password, starting with a capital of 10,000. Join an already existing game or set up a new market with an exciting theme. After joining a game, wait until the host starts the game. The stock prices of 5 companies will fluctuate over 7 turns. Don't forget to press the "Proceed with Trade" button to complete your trades! If you're ready to dominate the market, start the game now!`,
+      close: 'Close',
+    },
     warnings: {
       generic: 'An error has occurred.',
       unauthorized: 'You should sign in first',

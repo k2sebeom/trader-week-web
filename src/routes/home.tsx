@@ -12,12 +12,14 @@ import { useNavigate } from 'react-router-dom';
 import HeaderBar from '../components/HeaderBar/HeaderBar';
 import { getLanguage, setLanguage, supportedLanguages } from '../locales/languages';
 import { useTranslation } from 'react-i18next';
+import TutorialCover from '../components/EventCover/TutorialCover';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
 
   const [lng, setLng] = useState<string>(getLanguage());
+  const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
@@ -43,6 +45,7 @@ function Home() {
 
   return (
     <div className="container">
+      {showTutorial ? <TutorialCover onClose={() => setShowTutorial(false)} /> : null}
       <HeaderBar>
         <div
           style={{
@@ -50,8 +53,12 @@ function Home() {
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            gap: 20,
           }}
         >
+          <button onClick={() => setShowTutorial(true)} id="how-to">
+            {t('howto.buttonName')}
+          </button>
           <select
             value={lng}
             onChange={(e) => {

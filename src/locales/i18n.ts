@@ -39,6 +39,11 @@ interface CustomTranslation {
     error: string;
   };
 
+  howto: {
+    buttonName: string;
+    tutorial: string;
+    close: string;
+  };
   game: {
     participants: string;
     leave: string;

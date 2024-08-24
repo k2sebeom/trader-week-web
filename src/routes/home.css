@@ -29,3 +29,12 @@
   cursor: pointer;
   font-size: inherit;
 }
+
+#how-to {
+  background-color: #ddd;
+  border: 2px solid gray;
+  border-radius: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: inherit;
+}
