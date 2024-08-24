@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { joinGame } from '../utils/api';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import useMe from '../hooks/useMe';
 
 interface RoomTableProps {
   rooms: GameDTO[];
@@ -14,6 +15,7 @@ interface RoomTableProps {
 function RoomTable({ rooms }: RoomTableProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const me = useMe();
 
   return (
     <div className="table-container">
@@ -33,6 +35,10 @@ function RoomTable({ rooms }: RoomTableProps) {
               <td>
                 <button
                   onClick={async () => {
+                    if (me === null) {
+                      Swal.fire(t('warnings.unauthorized'), '', 'warning');
+                      return;
+                    }
                     const game = await joinGame(r.id);
                     if (game !== null) {
                       navigate(`/${r.id}`);
