@@ -3,7 +3,7 @@ import './home.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
-import { createGame, getAllGames, getHistory, getMe, signIn } from '../utils/api';
+import { createGame, getAllGames, getHistory, getMe, getRankings, signIn } from '../utils/api';
 import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
@@ -13,12 +13,16 @@ import HeaderBar from '../components/HeaderBar/HeaderBar';
 import { getLanguage, setLanguage, supportedLanguages } from '../locales/languages';
 import { useTranslation } from 'react-i18next';
 import TutorialCover from '../components/EventCover/TutorialCover';
+import RankingTable from '../components/RankingTable/RankingTable';
+import { getMockGolds, mockRanking } from '../utils/mock';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
 
   const [history, setHistory] = useState<GameDTO[]>([]);
+
+  const [ranking, setRanking] = useState<UserDTO[]>(mockRanking);
 
   const [lng, setLng] = useState<string>(getLanguage());
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
@@ -43,6 +47,26 @@ function Home() {
 
   useEffect(() => {
     getMe().then((data) => setMe(data));
+    getRankings().then((data) => {
+      if (data !== null) {
+        setRanking((prev) => {
+          const newRanking = [...prev];
+          data.forEach((u, i) => {
+            newRanking[i] = u;
+          });
+          if (data.length > 0) {
+            const high = data[data.length - 1].gold;
+            const newGolds = getMockGolds(high * 0.9, high);
+            newGolds.forEach((g, i) => {
+              if (i + data.length < newRanking.length) {
+                newRanking[i + data.length].gold = g;
+              }
+            });
+          }
+          return newRanking;
+        });
+      }
+    });
   }, []);
 
   // Load History
@@ -90,6 +114,8 @@ function Home() {
       </HeaderBar>
       <img alt="logo" src={LogoImg} className="logo" />
       <h1>Traders Week</h1>
+
+      <RankingTable ranking={ranking} />
 
       <div
         style={{

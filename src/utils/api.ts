@@ -136,3 +136,12 @@ export async function getHistory(): Promise<GameDTO[] | null> {
     return null;
   }
 }
+
+export async function getRankings(): Promise<UserDTO[] | null> {
+  try {
+    const resp = await instance.get(`/api/user/ranking`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}

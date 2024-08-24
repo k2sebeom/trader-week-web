@@ -4,6 +4,10 @@ const ar: CustomResource = {
   translation: {
     join: 'انضم إلى السوق!',
     create: 'أنشئ لعبة جديدة',
+    rankingTable: {
+      title: 'أساتذة السوق',
+    },
+
     warnings: {
       generic: 'حدث خطأ',
       unauthorized: 'الرجاء تسجيل الدخول أولاً',

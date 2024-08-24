@@ -4,6 +4,9 @@ const es: CustomResource = {
   translation: {
     join: '¡Únete al Mercado!',
     create: 'Crear Nuevo Juego',
+    rankingTable: {
+      title: 'Maestros del mercado',
+    },
     warnings: {
       generic: 'Se ha producido un error.',
       unauthorized: 'Primero inicie sesión',

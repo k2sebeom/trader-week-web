@@ -15,6 +15,10 @@ interface CustomTranslation {
     unauthorized: string;
   };
 
+  rankingTable: {
+    title: string;
+  };
+
   supportModal: {
     title: string;
     message: string;

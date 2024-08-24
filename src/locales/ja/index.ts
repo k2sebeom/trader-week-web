@@ -4,6 +4,10 @@ const ja: CustomResource = {
   translation: {
     join: 'マーケットに参加しよう！',
     create: '新しいゲームを作成',
+    rankingTable: {
+      title: '市場の達人',
+    },
+
     warnings: {
       generic: 'エラーが発生しました',
       unauthorized: 'まずログインしてください',
