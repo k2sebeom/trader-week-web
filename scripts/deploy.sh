@@ -17,4 +17,5 @@ ssh $REMOTE_TARGET << EOF
     tar xvzf $TAR_FILE
     sudo rm -rf /usr/share/nginx/html
     sudo mv dist /usr/share/nginx/html
+    rm $TAR_FILE
 EOF
