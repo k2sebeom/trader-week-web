@@ -3,16 +3,17 @@ import { GameDTO } from '../types/dto';
 import './table.css';
 import './button.css';
 import { useNavigate } from 'react-router-dom';
-import { joinGame } from '../utils/api';
+import { getGameInfo, joinGame } from '../utils/api';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import useMe from '../hooks/useMe';
 
 interface RoomTableProps {
   rooms: GameDTO[];
+  isActive: boolean;
 }
 
-function RoomTable({ rooms }: RoomTableProps) {
+function RoomTable({ rooms, isActive }: RoomTableProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const me = useMe();
@@ -39,7 +40,13 @@ function RoomTable({ rooms }: RoomTableProps) {
                       Swal.fire(t('warnings.unauthorized'), '', 'warning');
                       return;
                     }
-                    const game = await joinGame(r.id);
+                    let game;
+                    if (isActive) {
+                      game = await joinGame(r.id);
+                    } else {
+                      game = await getGameInfo(r.id);
+                    }
+
                     if (game !== null) {
                       navigate(`/${r.id}`);
                     } else {
@@ -51,7 +58,7 @@ function RoomTable({ rooms }: RoomTableProps) {
                   }}
                   className="styled-button"
                 >
-                  {t('gameTable.join')}
+                  {isActive ? t('gameTable.join') : t('historyTable.view')}
                 </button>
               </td>
             </tr>

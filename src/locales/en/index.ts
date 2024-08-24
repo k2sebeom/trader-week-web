@@ -13,6 +13,10 @@ const en: CustomResource = {
       generic: 'An error has occurred.',
       unauthorized: 'You should sign in first',
     },
+    historyTable: {
+      title: 'Past Games',
+      view: 'View',
+    },
     supportModal: {
       title: 'Support the market',
       message: 'This game is supported by a community ❤️',

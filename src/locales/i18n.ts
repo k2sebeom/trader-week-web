@@ -32,6 +32,10 @@ interface CustomTranslation {
     users: string;
     join: string;
   };
+  historyTable: {
+    title: string;
+    view: string;
+  };
   createModal: {
     title: string;
     message: string;

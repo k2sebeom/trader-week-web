@@ -30,6 +30,10 @@ const ar: CustomResource = {
       users: 'المستخدمون', // users
       join: 'انضم', // button label for Joining Game
     },
+    historyTable: {
+      title: 'الألعاب السابقة',
+      view: 'عرض',
+    },
 
     createModal: {
       title: 'أدخل موضوعًا للعبة!',

@@ -127,3 +127,12 @@ export async function throwAll(id: number): Promise<GameDTO | null> {
     return null;
   }
 }
+
+export async function getHistory(): Promise<GameDTO[] | null> {
+  try {
+    const resp = await instance.get(`/api/user/history`);
+    return resp.data;
+  } catch {
+    return null;
+  }
+}

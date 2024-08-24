@@ -3,7 +3,7 @@ import './home.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
-import { createGame, getAllGames, getMe, signIn } from '../utils/api';
+import { createGame, getAllGames, getHistory, getMe, signIn } from '../utils/api';
 import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
@@ -17,6 +17,8 @@ import TutorialCover from '../components/EventCover/TutorialCover';
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
   const [me, setMe] = useState<UserDTO | null>(null);
+
+  const [history, setHistory] = useState<GameDTO[]>([]);
 
   const [lng, setLng] = useState<string>(getLanguage());
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
@@ -42,6 +44,17 @@ function Home() {
   useEffect(() => {
     getMe().then((data) => setMe(data));
   }, []);
+
+  // Load History
+  useEffect(() => {
+    if (me !== null) {
+      getHistory().then((data) => {
+        if (data !== null) {
+          setHistory(data);
+        }
+      });
+    }
+  }, [me]);
 
   return (
     <div className="container">
@@ -120,7 +133,7 @@ function Home() {
         )}
       </div>
 
-      <RoomTable rooms={games} />
+      <RoomTable rooms={games} isActive={true} />
 
       <button
         style={{
@@ -167,6 +180,18 @@ function Home() {
       >
         {t('create')}
       </button>
+
+      {me !== null ? (
+        <h2
+          style={{
+            marginTop: 30,
+            marginBottom: 20,
+          }}
+        >
+          {t('historyTable.title')}
+        </h2>
+      ) : null}
+      {me !== null ? <RoomTable rooms={history} isActive={false} /> : null}
     </div>
   );
 }

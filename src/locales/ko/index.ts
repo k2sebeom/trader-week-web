@@ -30,6 +30,10 @@ const ko: CustomResource = {
       users: '사용자',
       join: '참가',
     },
+    historyTable: {
+      title: '지난 게임',
+      view: '보기',
+    },
 
     createModal: {
       title: '게임의 테마를 입력하세요!',

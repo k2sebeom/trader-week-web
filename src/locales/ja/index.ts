@@ -30,6 +30,10 @@ const ja: CustomResource = {
       users: '参加者', // 参加者
       join: '参加する', // ゲームに参加するボタンのラベル
     },
+    historyTable: {
+      title: '過去のゲーム',
+      view: '表示',
+    },
 
     createModal: {
       title: 'ゲームのテーマを入力してください！',

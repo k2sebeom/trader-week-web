@@ -30,6 +30,10 @@ const es: CustomResource = {
       users: 'Usuarios', // usuarios
       join: 'Unirse', // etiqueta del botón para Unirse al Juego
     },
+    historyTable: {
+      title: 'Juegos pasados',
+      view: 'Ver',
+    },
 
     createModal: {
       title: '¡Ingresa un tema para el juego!',
