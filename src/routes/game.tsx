@@ -15,6 +15,7 @@ import EventCover from '../components/EventCover/EventCover';
 import config from '../utils/configs';
 import HeaderBar from '../components/HeaderBar/HeaderBar';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment-timezone';
 
 function Game() {
   const { gameId } = useParams();
@@ -26,7 +27,6 @@ function Game() {
     theme: '',
     participants: [],
     companies: [],
-    started_at: Date(),
     closed: false,
     trades: [],
   });
@@ -40,7 +40,7 @@ function Game() {
 
   const [showCover, setShowCover] = useState<boolean>(false);
 
-  const [deadline, setDeadline] = useState<number>(Date.now());
+  const [deadline, setDeadline] = useState<number>(moment.utc().valueOf());
   const [timeperc, setTimeperc] = useState<number>(0);
 
   const navigate = useNavigate();
@@ -121,10 +121,10 @@ function Game() {
         setCurrDay(game.companies[0].events.length);
 
         if (game.companies[0].events.length === 0 && game.started_at) {
-          setDeadline(Date.parse(game.started_at) + (config.game.seconds_per_turn - 5) * 1000);
+          setDeadline(moment.utc(game.started_at).valueOf() + (config.game.seconds_per_turn - 5) * 1000);
         } else {
           const lastEvent = game.companies[0].events[game.companies[0].events.length - 1];
-          setDeadline(Date.parse(lastEvent.happen_at) + (config.game.seconds_per_turn - 5) * 1000);
+          setDeadline(moment.utc(lastEvent.happen_at).valueOf() + (config.game.seconds_per_turn - 5) * 1000);
         }
       }
     }
@@ -133,8 +133,8 @@ function Game() {
   // Timer Tick
   useEffect(() => {
     const job = setInterval(() => {
-      if (Date.now() < deadline) {
-        setTimeperc(100 - (deadline - Date.now()) / ((config.game.seconds_per_turn - 5) * 10));
+      if (moment.utc().valueOf() < deadline) {
+        setTimeperc(100 - (deadline - moment.utc().valueOf()) / (config.game.seconds_per_turn - 5) / 10);
       }
     }, 200);
     return () => {

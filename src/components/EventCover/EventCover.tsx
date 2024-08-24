@@ -7,6 +7,7 @@ import config from '../../utils/configs';
 import { getGameResult, throwAll } from '../../utils/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment-timezone';
 
 interface EventCoverProps {
   day: number;
@@ -51,7 +52,7 @@ function EventCover({ day, onEnd, companies, game }: EventCoverProps) {
   const animate = useCallback(async () => {
     if (
       game.started_at !== undefined &&
-      Date.now() - Date.parse(game.started_at) > config.game.seconds_per_turn * 8000
+      moment.utc().valueOf() - moment.utc(game.started_at).valueOf() > config.game.seconds_per_turn * 8000
     ) {
       setMode(2);
       await finishGame();
