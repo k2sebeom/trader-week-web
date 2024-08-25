@@ -18,4 +18,7 @@ ssh $REMOTE_TARGET << EOF
     sudo rm -rf /usr/share/nginx/html
     sudo mv dist /usr/share/nginx/html
     rm $TAR_FILE
+
+    sudo chown -R :nginx /usr/share/nginx/html
+    sudo chmod -R 750 /usr/share/nginx/html
 EOF
