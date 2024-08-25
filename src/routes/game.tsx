@@ -79,6 +79,14 @@ function Game() {
     return gold;
   }, [deposit, delta, game.companies]);
 
+  const getNetWorth = useCallback((): number => {
+    let gold = deposit;
+    holdings.forEach((h, i) => {
+      gold += game.companies[i].price * h;
+    });
+    return gold;
+  }, [holdings, deposit, game.companies]);
+
   const getDeltaTrades = useCallback((): TradeDetail[] => {
     const trades = delta.map((d, i) => {
       return {
@@ -213,6 +221,16 @@ function Game() {
             <h2>{t('game.deposit')}: </h2>
             <img src={CoinImg} alt="gold" width={30} height={30} />
             <h2>{getCurrDeposit()}</h2>
+
+            <h2
+              style={{
+                marginLeft: 20,
+              }}
+            >
+              Net Worth
+            </h2>
+            <img src={CoinImg} alt="gold" width={30} height={30} />
+            <h2>{getNetWorth()}</h2>
           </div>
         ) : null}
 
