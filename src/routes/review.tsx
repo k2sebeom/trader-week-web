@@ -38,9 +38,9 @@ function Review() {
 
       let deposit = 0;
       const holdings = Object.fromEntries(game.companies.map((c) => [c.id, 0]));
-      const earnings = [0, 0, 0, 0, 0, 0, 0];
+      const earnings = [...Array(8)].map(() => 0);
 
-      for (let d = 0; d < 7; d++) {
+      for (let d = 0; d < 8; d++) {
         const dayTrades = userTrades.filter((t) => t.day === d);
         dayTrades.forEach((t) => {
           deposit -= t.amount * companyMap[t.company_id].history[t.day];
