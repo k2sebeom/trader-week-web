@@ -14,11 +14,14 @@ function useMe(): UseMeHooks {
     getMe().then((data) => setMe(data));
   }, [setMe]);
 
-  const meSignIn = useCallback(async (nickname: string, password: string) => {
-    const data = await signIn(nickname, password);
-    setMe(data);
-    return data;
-  }, []);
+  const meSignIn = useCallback(
+    async (nickname: string, password: string) => {
+      const data = await signIn(nickname, password);
+      setMe(data);
+      return data;
+    },
+    [setMe],
+  );
 
   return {
     me,
