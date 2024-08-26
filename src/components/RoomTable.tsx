@@ -1,22 +1,21 @@
 import React from 'react';
-import { GameDTO } from '../types/dto';
+import { GameDTO, UserDTO } from '../types/dto';
 import './table.css';
 import './button.css';
 import { useNavigate } from 'react-router-dom';
 import { getGameInfo, joinGame } from '../utils/api';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
-import useMe from '../hooks/useMe';
 
 interface RoomTableProps {
   rooms: GameDTO[];
   isActive: boolean;
+  me: UserDTO | null;
 }
 
-function RoomTable({ rooms, isActive }: RoomTableProps) {
+function RoomTable({ me, rooms, isActive }: RoomTableProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const me = useMe();
 
   return (
     <div className="table-container">

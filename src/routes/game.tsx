@@ -19,7 +19,7 @@ import moment from 'moment-timezone';
 
 function Game() {
   const { gameId } = useParams();
-  const me = useMe();
+  const { me } = useMe();
 
   const [game, setGame] = useState<GameDTO>({
     id: -1,

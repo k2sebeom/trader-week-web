@@ -3,7 +3,7 @@ import './home.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
-import { createGame, getAllGames, getHistory, getMe, getRankings, signIn } from '../utils/api';
+import { createGame, getAllGames, getHistory, getRankings } from '../utils/api';
 import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
@@ -15,10 +15,11 @@ import { useTranslation } from 'react-i18next';
 import TutorialCover from '../components/EventCover/TutorialCover';
 import RankingTable from '../components/RankingTable/RankingTable';
 import { sortRanking, mockRanking } from '../utils/mock';
+import useMe from '../hooks/useMe';
 
 function Home() {
   const [games, setGames] = useState<GameDTO[]>([]);
-  const [me, setMe] = useState<UserDTO | null>(null);
+  const { me, meSignIn } = useMe();
 
   const [history, setHistory] = useState<GameDTO[]>([]);
 
@@ -46,7 +47,6 @@ function Home() {
   }, [lng]);
 
   useEffect(() => {
-    getMe().then((data) => setMe(data));
     getRankings().then((data) => {
       if (data !== null) {
         setRanking(sortRanking([...mockRanking, ...data]));
@@ -130,10 +130,7 @@ function Home() {
               });
               if (result.value !== undefined) {
                 const [nickname, password] = result.value;
-                const user = await signIn(nickname.value, password.value);
-                if (user !== null) {
-                  setMe(user);
-                }
+                await meSignIn(nickname.value, password.value);
               }
             }}
           >
@@ -144,7 +141,7 @@ function Home() {
         )}
       </div>
 
-      <RoomTable rooms={games} isActive={true} />
+      <RoomTable rooms={games} isActive={true} me={me} />
 
       <button
         style={{
@@ -202,7 +199,7 @@ function Home() {
           {t('historyTable.title')}
         </h2>
       ) : null}
-      {me !== null ? <RoomTable rooms={history} isActive={false} /> : null}
+      {me !== null ? <RoomTable rooms={history} isActive={false} me={me} /> : null}
     </div>
   );
 }
