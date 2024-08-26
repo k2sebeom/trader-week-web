@@ -8,9 +8,10 @@ import './card.css';
 
 interface CompanyCardProps {
   company: CompanyDTO;
+  showEvents?: boolean;
 }
 
-function CompanyCard({ company }: CompanyCardProps) {
+function CompanyCard({ company, showEvents }: CompanyCardProps) {
   return (
     <div className="card">
       <img className="thumbnail" src={`${config.api_base}/thumbnails/${company.thumbnail}`} alt={company.name} />
@@ -28,7 +29,7 @@ function CompanyCard({ company }: CompanyCardProps) {
           <img src={CoinImg} alt="gold" width={30} height={30} />
           <h3>{company.price}</h3>
         </div>
-        {company.events.length > 0 ? (
+        {company.events.length > 0 && (showEvents ?? true) ? (
           <div>
             <p>{company.events[company.events.length - 1].description}</p>
             <h3

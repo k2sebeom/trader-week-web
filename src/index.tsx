@@ -8,6 +8,7 @@ import Game from './routes/game';
 import { Chart as ChartJS, registerables, TimeScale } from 'chart.js';
 
 import './locales/i18n';
+import Review from './routes/review';
 
 ChartJS.register(...registerables, TimeScale);
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: '/:gameId',
     element: <Game />,
+  },
+  {
+    path: '/review/:gameId',
+    element: <Review />,
   },
 ]);
 

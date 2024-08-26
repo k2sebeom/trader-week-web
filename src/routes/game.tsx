@@ -109,7 +109,7 @@ function Game() {
         setDelta(game.companies.map(() => 0));
       }
     },
-    [game.companies, game.id],
+    [game.companies, game.id, t],
   );
 
   // Refresh Game every 3 seconds

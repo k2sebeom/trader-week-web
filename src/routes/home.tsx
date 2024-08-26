@@ -44,7 +44,7 @@ function Home() {
 
   useEffect(() => {
     i18n.changeLanguage(lng);
-  }, [lng]);
+  }, [lng, i18n]);
 
   useEffect(() => {
     getRankings().then((data) => {

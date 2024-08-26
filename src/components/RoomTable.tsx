@@ -47,7 +47,8 @@ function RoomTable({ me, rooms, isActive }: RoomTableProps) {
                     }
 
                     if (game !== null) {
-                      navigate(`/${r.id}`);
+                      if (isActive) navigate(`/${r.id}`);
+                      else navigate(`/review/${r.id}`);
                     } else {
                       Swal.fire({
                         title: t('warnings.generic'),
