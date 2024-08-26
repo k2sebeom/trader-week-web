@@ -39,16 +39,19 @@ function Review() {
       let deposit = 0;
       const holdings = Object.fromEntries(game.companies.map((c) => [c.id, 0]));
       const earnings = [0, 0, 0, 0, 0, 0, 0];
-      userTrades.forEach((t) => {
-        deposit -= t.amount * companyMap[t.company_id].history[t.day];
-        holdings[t.company_id] += t.amount;
 
+      for (let d = 0; d < 7; d++) {
+        const dayTrades = userTrades.filter((t) => t.day === d);
+        dayTrades.forEach((t) => {
+          deposit -= t.amount * companyMap[t.company_id].history[t.day];
+          holdings[t.company_id] += t.amount;
+        });
         const worth = Object.entries(holdings)
-          .map(([cid, h]) => h * companyMap[cid].history[t.day])
+          .map(([cid, h]) => h * companyMap[cid].history[d])
           .reduce((a, b) => a + b, deposit);
+        earnings[d] = worth;
+      }
 
-        earnings[t.day] = worth;
-      });
       return earnings;
     },
     [game.companies, game.trades],
@@ -61,13 +64,12 @@ function Review() {
         const data = await getGameInfo(id);
         if (data !== null) {
           setGame(data);
-          getEarningRate(data.participants[0].id);
         }
       } catch (err) {
         console.error(err);
       }
     }
-  }, [gameId, getEarningRate]);
+  }, [gameId]);
 
   useEffect(() => {
     loadGame();
@@ -107,21 +109,6 @@ function Review() {
                   label: u.nickname,
                   data: getEarningRate(u.id),
                 })),
-              }}
-              options={{
-                plugins: {
-                  tooltip: {
-                    callbacks: {
-                      label: (ctx) => {
-                        const comp = game.companies[ctx.datasetIndex];
-                        if (ctx.dataIndex === 0) {
-                          return `${comp.history[0]}`;
-                        }
-                        return comp.events[ctx.dataIndex - 1].description;
-                      },
-                    },
-                  },
-                },
               }}
             />
           </div>
