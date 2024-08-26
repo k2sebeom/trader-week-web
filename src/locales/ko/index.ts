@@ -4,6 +4,7 @@ const ko: CustomResource = {
   translation: {
     join: '시장에 참여하세요!',
     create: '새 게임 만들기',
+    signOut: '로그아웃',
     rankingTable: {
       title: '시장의 정복자들',
     },

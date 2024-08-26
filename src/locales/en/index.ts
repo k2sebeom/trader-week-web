@@ -4,6 +4,7 @@ const en: CustomResource = {
   translation: {
     join: 'Join the Market!',
     create: 'Create New Game',
+    signOut: 'Sign Out',
     rankingTable: {
       title: 'Masters of the Market',
     },

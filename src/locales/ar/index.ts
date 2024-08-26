@@ -4,6 +4,7 @@ const ar: CustomResource = {
   translation: {
     join: 'انضم إلى السوق!',
     create: 'أنشئ لعبة جديدة',
+    signOut: 'تسجيل الخروج',
     rankingTable: {
       title: 'أساتذة السوق',
     },

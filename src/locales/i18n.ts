@@ -10,6 +10,8 @@ interface CustomTranslation {
   join: string;
   create: string;
 
+  signOut: string;
+
   warnings: {
     generic: string;
     unauthorized: string;

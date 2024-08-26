@@ -37,6 +37,15 @@ export async function signIn(nickname: string, password: string): Promise<UserDT
   }
 }
 
+export async function signOut(): Promise<boolean> {
+  try {
+    const resp = await instance.get('/api/user/signout');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function createGame(theme: string, language: string): Promise<GameDTO | null> {
   if (theme.trim().length === 0) {
     theme = 'Random Theme';

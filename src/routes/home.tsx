@@ -3,7 +3,7 @@ import './home.css';
 import '../components/button.css';
 
 import LogoImg from '../assets/images/Logo.png';
-import { createGame, getAllGames, getHistory, getRankings } from '../utils/api';
+import { createGame, getAllGames, getHistory, getRankings, signOut } from '../utils/api';
 import { GameDTO, UserDTO } from '../types/dto';
 import RoomTable from '../components/RoomTable';
 import Swal from 'sweetalert2';
@@ -78,6 +78,15 @@ function Home() {
             gap: 20,
           }}
         >
+          <button
+            onClick={async () => {
+              await signOut();
+              location.reload();
+            }}
+            id="sign-out"
+          >
+            {t('howto.buttonName')}
+          </button>
           <button onClick={() => setShowTutorial(true)} id="how-to">
             {t('howto.buttonName')}
           </button>
