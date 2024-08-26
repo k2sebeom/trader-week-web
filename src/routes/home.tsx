@@ -83,11 +83,11 @@ function Home() {
               await signOut();
               location.reload();
             }}
-            id="sign-out"
+            className="header-button"
           >
-            {t('howto.buttonName')}
+            {t('signOut')}
           </button>
-          <button onClick={() => setShowTutorial(true)} id="how-to">
+          <button onClick={() => setShowTutorial(true)} className="header-button">
             {t('howto.buttonName')}
           </button>
           <select

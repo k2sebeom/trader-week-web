@@ -39,7 +39,7 @@ export async function signIn(nickname: string, password: string): Promise<UserDT
 
 export async function signOut(): Promise<boolean> {
   try {
-    const resp = await instance.get('/api/user/signout');
+    await instance.get('/api/user/signout');
     return true;
   } catch {
     return false;

@@ -30,7 +30,7 @@
   font-size: inherit;
 }
 
-#how-to {
+.header-button {
   background-color: #ddd;
   border: 2px solid gray;
   border-radius: 15px;
